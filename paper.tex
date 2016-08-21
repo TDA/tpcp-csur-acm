@@ -31,6 +31,15 @@
 \usepackage{url}
 \usepackage{color}
 \definecolor{nodecolor}{RGB}{202,202,202}
+\newlength\framesep
+\setlength\framesep{16pt}
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+\pgfkeys{
+	/tikz/node distance/.append code={
+		\pgfkeyssetvalue{/tikz/node distance value}{#1}
+	}
+}
 
 \widowpenalty=10000
 \clubpenalty=10000
@@ -185,46 +194,91 @@ University of Minnesota; C. Huang, Google; T. F. Abdelzaher,
 
 \maketitle
 
-
 \section{Introduction}
+Traditional security defenses for the computing environment have
+focused on securing the \emph{border} of the network, as this is the
+entry place for most attackers. However, even with sophisticated
+border technologies in place, there are constant attacks and data
+breaches against our networks. The goal of this work is to survey the
+state of security for the entire computing platform, in order to
+identify specific areas that are underserved by the research community
+and that require additional research and investment.
 
-As a new technology, Wireless Sensor Networks (WSNs) has a wide
-range of applications [Culler 2001,Bahl 2002,Akyildiz 2001], including
-environment monitoring, smart buildings, medical care, industrial and
-military applications. Among them, a recent trend is to develop
-commercial sensor networks that require pervasive sensing of both
-environment and human beings, for example, assisted living
-[Akyildiz 2002,Harvard 2001,CROSSBOW] and smart homes
-[Harvard 2001,Adya 2001,CROSSBOW].
-% quote
-\begin{quote}
-``For these applications, sensor devices are incorporated into human
-cloths [Natarajan 2001,Zhou 2006,Bahl 2002,Adya 2001] for monitoring
-health related information like EKG readings, fall detection, and voice recognition".
-\end{quote}
-While collecting all these multimedia information
-[Akyildiz 2002] requires a high network throughput, off-the-shelf
-sensor devices only provide very limited bandwidth in a single
-channel: 19.2Kbps in MICA2 [Bahl 2002] and 250Kbps in MICAz.
+Modern computing infrastructure serves a wide array of needs, with
+diverse technologies and implementations: embedded systems, cloud
+computing, sensor networks, desktops, mobile devices, and industrial
+control systems. Rather than consider each of these computing
+platforms independently, in this work we abstracted the computing
+platform into several layers, each of which are applicable to every
+computing infrastructure. In particular, we analyzed the security
+research performed at the following layers of the computing platform:
+hardware, firmware, bus, hypervisor, operating system, application,
+and network layers (Figure~1).
 
-In this article, we propose MMSN, abbreviation for Multifrequency
-Media access control for wireless Sensor Networks. The main
-contributions of this work can be summarized as follows.
-% itemize
-\begin{itemize}
-\item To the best of our knowledge, the MMSN protocol is the first
-multifrequency MAC protocol especially designed for WSNs, in which
-each device is equipped with a single radio transceiver and
-the MAC layer packet size is very small.
-\item Instead of using pairwise RTS/CTS frequency negotiation
-[Adya 2001,Culler 2001; Tzamaloukas 2001; Zhou 2006],
-we propose lightweight frequency assignments, which are good choices
-for many deployed comparatively static WSNs.
-\item We develop new toggle transmission and snooping techniques to
-enable a single radio transceiver in a sensor device to achieve
-scalable performance, avoiding the nonscalable ``one
-control channel + multiple data channels'' design [Natarajan 2001].
-\end{itemize}
+The goal of this work is to focus research effort on \emph{securing
+	the entire computing platform.} An attack must effectively target a
+specific vulnerability in a specific layer of the computing stack, and
+an attacker uses that vulnerability to establish persistence on the
+machine, potentially attacking the underlying computing layers of the
+same machine or leveraging their place in the network to attack other
+machines. Therefore, if we wish to increase the security of our
+computing systems, and reduce the number and scope of security
+breaches, it is essential that we encourage focus on novel ideas,
+algorithms, and techniques to secure every level of the computing
+stack.
+
+In this report, we will first discuss the computing stack, and, for
+every layer, we will describe the layer, identify primary threats
+against the layer, and summarize the research on attempts to secure
+that layer, and finally we will determine areas that require further
+research investment to ensure the security of the layer.\input{fig_layers}
+
+\section{Background}
+Here, we consider the diverse array of computing platforms as a number
+of abstracted layers: hardware, firmware, bus, hypervisor, operating
+system, application, and network layers. In this way, we can
+categorize the research efforts that target each layer.
+
+The layers are arranged from lowest to highest layer. The lower layer
+has more control over the computing system, while the upper layers
+have less control. For instance, the Hardware layer has total control
+over the physical hardware and memory of the machine, while an
+application running in the Application layer can only see a portion of
+the machine's memory (because of the virtual memory used by the
+Operating System).
+
+A typical compromise, in relation to the proposed layers, is the
+following: A vulnerability in an application is targeted, thus
+allowing the attacker full control of the application layer. From
+here, the attacker can scan the other applications on the network and
+attempt to exploit those applications, thus spreading horizontally
+throughout the network. Alternatively, as the application layer is the
+least privileged and least persistent of the layers, the attack can
+attempt to further the compromise on the lower layers of the machine.
+For instance, the attacker can exploit the hypervisor layer to
+compromise the host hypervisor. From this vantage point, the attacker
+can transparently extract information from all the other guest
+Operating Systems. More insidiously, the attacker can even exploit the
+firmware level, which allows the attacker to persist even after
+a complete reinstall of the operating system.
+
+In our abstract model, the lower levels have more control over the
+computing system, yet they have a smaller attacker surface. However,
+the lower levels can be attacked by exploiting the upper levels. Also, the upper
+levels trust the abstractions provided by the lower levels. For
+instance, the application-layer visualization of an industrial control
+system trusts that the data reported by the hardware layer is
+accurate. If an attacker is able to control and manipulate the
+hardware to falsely report the state of the system, the entire
+integrity of the system can be compromised.
+
+The interconnected nature of the layers means that the security of the
+entire layer must be a priority. However, at the same time, the
+security improvement of any layer will have an amplifying effect on
+the security of the whole system. For instance, improvement to the
+security of the application layer decreases the chance of an
+application compromise, which further decreases the risk of the attack
+propagating throughout the network and through the other layers.
 
 % Head 1
 \section{MMSN Protocol}
