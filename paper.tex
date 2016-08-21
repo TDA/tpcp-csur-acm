@@ -928,6 +928,134 @@ implementation, possibly because there are no models for attacks
 against a hypervisor. Further research in increasing the testability
 and automated analysis of hypervisor reliability would improve security.
 
+
+\section{Operating Systems}
+
+The Operating System layer is responsible for ensuring that multiple
+applications are able to concurrently run, without interfering with
+each other. In addition, the Operating System layer is also
+responsible for providing a unified abstraction of the underlying
+hardware layer for the application layer. Therefore, in terms of
+security, the Operating System layer has more privileges than the
+application layer, as the Operating System controls the execution and
+scheduling of processes, the access control policies that allow one
+application to hide information/data from the other processes.
+
+\subsection{Threats}
+
+The main threat to the Operating System layer is an attacker
+compromising the security of the Operating System. There are two main
+avenues to how this compromise can occur: (1) an attacker exploits a
+vulnerability in the Operating System from the Application layer or
+(2) an attacker compromises a lower layer (for instance, modifying the
+Operating System code directly to the hardware's Hard Drive).
+
+Vulnerabilities in the Operating System allow an attacker to have
+complete control over the other application running in the operating
+system. In addition, the attacker can use their vantage point at the
+operating system to attempt to escalate their attack to the hypervisor
+or lower layers, such as the firmware. Vulnerabilities in the
+Operating System result from programming errors that allow an attacker
+to gain control of the Operating System code or data. These
+vulnerabilities are traditional memory corruption vulnerabilities or
+even logic flaws. 
+
+A main concern in Operating System security is the presence of
+rootkits, which are malicious modifications to the Operating System
+which an attacker uses to achieve persistence on the system. In
+addition, attackers use rootkits to hide from other applications on
+the system. For instance, the rootkit will modify the operating system
+code such that the attacker's processes and files are hidden from the
+administrator or defensive software installed on the Operating System,
+such as an anti-virus solution. 
+
+Direct access to the hardware can allow an attacker to compromise the
+Operating System. It is in this way that an attacker can propagate
+their compromise from the lower layers of the computing platform to
+the upper layers. The attacker has similar capabilities as when
+exploiting a vulnerability in the Operating system.
+
+\subsection{Research}
+
+Research into Operating System security has a long and rich history,
+which has looked at design flaws in Operating
+Systems~\cite{attanasio1973}. Further research looked at reducing the
+permissions of the \emph{root} users, essentially compartmentalizing
+the privilege of the Operating System~\cite{kamp2000,kurmus2014a}.
+
+Rootkits attempt to persist the attacker's compromise of the operating
+system and allow them to hide their malicious behavior from other
+applications on the system. Therefore, rootkit detection is an
+important research topic in Operating System
+security~\cite{petroni2004,wang2005,petroni2007,payne2008,sharif2009,yin2010,bianchi2012}.
+Another approach is to prevent
+the rootkit from altering the Operating System
+kernel~\cite{riley2008,wang2009,grace2010,gadaleta2011}.
+
+Vulnerability analysis techniques have been used to discover
+vulnerabilities in the Operating System kernel before a hacker is able
+to use and exploit those vulnerabilities. Static analysis techniques
+have been used~\cite{chou2001,chen2011}.
+
+Other vulnerability defenses include defenses for specific
+vulnerability classes, such as buffer overflows~\cite{dalton2008}.
+Randomization techniques attempt to alter the environment of the
+operating system in such a way that the system continues to function
+but the attacker's exploit fails~\cite{lin2009,giuffrida2012}.
+Control-flow integrity techniques have been applied to Operating
+System code as well~\cite{li2011a}.
+
+Other research into Operating System security has looked at how to
+protect applications from a malicious or compromised Operating
+System~\cite{ta-min2006,onarlioglu2013,li2014}.
+
+% either driver code execute or change `and' to `is'
+As driver code executes in kernel space, and is a frequent source of
+vulnerabilities~\cite{kadav2012}, researchers have looked into how to
+make drivers more robust~\cite{ganapathy2008,hruby2012} or isolated
+from the rest of the kernel~\cite{boyd-wickizer2010}.
+
+Attack papers show that it is possible to compromise the kernel
+without injecting any additional code, using Return Oriented
+Programming techniques~\cite{hund2009}.
+
+A completely different approach is to formally prove the correctness
+of the Operating System kernel~\cite{klein2009}.
+
+Updating Operating Systems with security updates is frequently
+difficult, as the Operating System must be restarted. However,
+researchers have explored how to apply an update to the Operating
+System without rebooting the system~\cite{arnold2009}.
+
+Some work has been done on removing the operating system
+entirely~\cite{madhavapeddy2010} or trimming/tailoring parts of the
+Operating System~\cite{kurmus2011,madhavapeddy2013,howell2013,kurmus2013,kurmus2014}.
+This has the security benefit of reducing
+the attack surface of the Operating System.
+
+\subsection{Suggested Focus Areas}
+
+We believe that, while significant research has been done on the
+Operating System layer, there still remains work to be done in this
+area. In particular, as the Operating System is frequently in contact
+with malicious applications, it must be hardened from attack.
+
+Therefore, we believe that further research into the line of trimming
+or tailoring the operating system is important, such that the attack
+surface is significantly reduced.
+
+We also believe that non-control data-flow attacks will be the new
+wave of attacks against Operating Systems. Therefore, we need new
+analysis techniques, both static and dynamic, to discover these
+vulnerabilities that do not require altering the control flow of the
+Operating System.
+
+A critical component of the Operating System is to handle the
+execution of concurrent applications. Therefore, attacks that take
+advantage of the concurrency in the Operating System are unexplored.
+Research must be done to create new models for these attacks. 
+
+
 \section{Conclusions}
 
 In this article, we develop the first multifrequency MAC protocol for
