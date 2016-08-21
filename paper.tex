@@ -280,188 +280,394 @@ security of the application layer decreases the chance of an
 application compromise, which further decreases the risk of the attack
 propagating throughout the network and through the other layers.
 
-% Head 1
-\section{MMSN Protocol}
+\section{Hardware}
 
-% Head 2
-\subsection{Frequency Assignment}
+Hardware underpins all of modern computing. While most software is
+constructed and written in such a way as to abstract the
+peculiarities of the underlying hardware, the software cannot
+execute without hardware. In our abstracted model of the computing
+stack, hardware is at the bottom, which means that it has complete
+control of the computing system.
 
-We propose a suboptimal distribution to be used by each node, which is
-easy to compute and does not depend on the number of competing
-nodes. A natural candidate is an increasing geometric sequence, in
-which
-% Numbered Equation
-\begin{equation}
-\label{eqn:01}
-P(t)=\frac{b^{\frac{t+1}{T+1}}-b^{\frac{t}{T+1}}}{b-1},
-\end{equation}
-where $t=0,{\ldots}\,,T$, and $b$ is a number greater than $1$.
+For hardware here, we consider all types of hardware in the computing
+system: CPUs, SoCs, or any other integrated circuit (IC) that performs
+computation or communication on behalf of the upper computing layers.
+This also includes networking cards and other peripheral devices
+(Bluetooth or USB devices), which may have their own special purpose
+embedded hardware.
 
-In our algorithm, we use the suboptimal approach for simplicity and
-generality. We need to make the distribution of the selected back-off
-time slice at each node conform to what is shown in Equation
-(\ref{eqn:01}). It is implemented as follows: First, a random
-variable $\alpha$ with a uniform distribution within the interval
-$(0, 1)$ is generated on each node, then time slice $i$ is selected
-according to the following equation:
-% Unnumbered Equation
-\[
-i=\lfloor(T+1)\log_b[\alpha(b-1)+1]\rfloor.
-\]
-It can be easily proven that the distribution of $i$ conforms to Equation
-(\ref{eqn:01}).
+A key difficulty in analyzing the security concerns of hardware is
+reverse engineering the workings of the hardware. Traditional
+techniques to reverse engineer hardware require destroying the chip,
+and if a single hardware component is destroyed to reverse engineer,
+there is no guarantee that other hardware is identical to the reverse
+engineered chip.
 
-So protocols [Bahl 2002,Culler 2001,Zhou 2006,Adya 2001,Culler 2001;
-Tzamaloukas-01; Akyildiz-01] that use RTS/CTS
-controls\footnote{RTS/CTS controls are required to be implemented by
-802.11-compliant devices. They can be used as an optional mechanism
-to avoid Hidden Terminal Problems in the 802.11 standard and
-protocols based on those similar to [Akyildiz 2001] and
-[Adya 2001].} for frequency negotiation and reservation are not
-suitable for WSN applications, even though they exhibit good
-performance in general wireless ad hoc
-networks.
+\subsection{Threats}
 
-% Head 3
-\subsubsection{Exclusive Frequency Assignment}
+As the lower-most level of the computing stack, all layers implicitly
+trust that the hardware is executing correctly. Therefore, if an
+adversary is able to maliciously control the hardware execution, they
+can compromise all layers of the computing stack. Thus, the security
+of the hardware is of paramount importance.
 
-In exclusive frequency assignment, nodes first exchange their IDs
-among two communication hops so that each node knows its two-hop
-neighbors' IDs. In the second broadcast, each node beacons all
-neighbors' IDs it has collected during the first broadcast period.
+The main threat considered by the literature on hardware is the threat
+of Trojan logic. This is malicious logic that is introduced into the
+% adversary, by definition is a malicious entity.
+hardware chip by an adversary. Trojan introduction can be
+done at several points of the hardware lifecycle:
 
-% Head 4
-\paragraph{Eavesdropping}
+\begin{itemize}
+	
+	\item \textbf{Design}. A malicious insider can incorporate a Trojan into the
+	design of the hardware.
+	
+	\item \textbf{Third-party IP}. Oftentimes, hardware designers will take
+	advantage of the functionality of third-party components, using them
+	as a black-box. Thus, a third-party can include malicious Trojan
+	logic.
+	
+	\item \textbf{Compilation of Design}. When the design of the hardware is
+	compiled, but before it is sent for fabrication, the design could be
+	changed to incorporate the Trojan logic. Note that this differs from
+	Design-time, because the Trojan logic is not included in the design.
+	Consider the case of malware on a hardware designer's machine, which
+	changes the design when it is compiled.
+	
+	\item \textbf{Manufacture}. A malicious manufacturer can introduce Trojan logic into hardware after the design is received but before the hardware
+	is fabricated.
+	
+	\item \textbf{Delivery}. A malicious hardware component containing Trojan logic can be swapped with a benign component after fabrication but before
+	delivery and installation.
+	
+\end{itemize}
 
-Even though the even selection scheme leads to even sharing of
-available frequencies among any two-hop neighborhood, it involves a
-number of two-hop broadcasts. To reduce the communication cost, we
-propose a lightweight eavesdropping scheme.
+The malicious Trojan logic behavior comes in three different forms:
+% TODO: Sai: is this three or two??
 
-\subsection{Basic Notations}
+\begin{itemize}
+	
+	\item \textbf{Trigger-based}. The malicious behavior or logic is only expressed when certain conditions are met. Consider a Trojan logic in a CPU,
+	which changes the executing code to Ring 0 (with the most
+	privileges) when a specific sequence of instructions are issued. The
+	trigger can be internal to the chip, such as in the CPU case, or
+	could be external, for instance a certain radio frequency will
+	trigger the malicious code.
+	
+	\item \textbf{Constant}. The malicious behavior or logic is continually
+	executed and subtly changes the output of the hardware in a way that
+	compromises security. Consider a Trojan logic of a Wi-Fi card, which
+	leaks the Wi-Fi passphrase by embedding it in the operating
+	parameters of the Wi-Fi radio.
+	
+\end{itemize}
 
-As Algorithm~\ref{alg:one} states, for each frequency
-number, each node calculates a random number (${\textit{Rnd}}_{\alpha}$) for
-itself and a random number (${\textit{Rnd}}_{\beta}$) for each of its two-hop
-neighbors with the same pseudorandom number generator.
-% Algorithm
-\begin{algorithm}[t]
-\SetAlgoNoLine
-\KwIn{Node $\alpha$'s ID ($ID_{\alpha}$), and node $\alpha$'s
-neighbors' IDs within two communication hops.}
-\KwOut{The frequency number ($FreNum_{\alpha}$) node $\alpha$ gets assigned.}
-$index$ = 0; $FreNum_{\alpha}$ = -1\;
-\Repeat{$FreNum_{\alpha} > -1$}{
-        $Rnd_{\alpha}$ = Random($ID_{\alpha}$, $index$)\;
-        $Found$ = $TRUE$\;
-        \For{each node $\beta$ in $\alpha$'s two communication hops
-    }{
-      $Rnd_{\beta}$ = Random($ID_{\beta}$, $index$)\;
-      \If{($Rnd_{\alpha} < Rnd_{\beta}$) \text{or} ($Rnd_{\alpha}$ ==
-          $Rnd_{\beta}$ \text{and} $ID_{\alpha} < ID_{\beta}$)\;
-      }{
-        $Found$ = $FALSE$; break\;
-      }
-        }
-     \eIf{$Found$}{
-           $FreNum_{\alpha}$ = $index$\;
-         }{
-           $index$ ++\;
-     }
-      }
-\caption{Frequency Number Computation}
-\label{alg:one}
-\end{algorithm}
+These features of Trojan logic in hardware drive the research that
+attempts to detect them. 
 
-Bus masters are divided into two disjoint sets, $\mathcal{M}_{RT}$
-and $\mathcal{M}_{NRT}$.
-% description
-\begin{description}
-\item[RT Masters]
-$\mathcal{M}_{RT}=\{ \vec{m}_{1},\dots,\vec{m}_{n}\}$ denotes the
-$n$ RT masters issuing real-time constrained requests. To model the
-current request issued by an $\vec{m}_{i}$ in $\mathcal{M}_{RT}$,
-three parameters---the recurrence time $(r_i)$, the service cycle
-$(c_i)$, and the relative deadline $(d_i)$---are used, with their
-relationships.
-\item[NRT Masters]
-$\mathcal{M}_{NRT}=\{ \vec{m}_{n+1},\dots,\vec{m}_{n+m}\}$ is a set
-of $m$ masters issuing nonreal-time constrained requests. In our
-model, each $\vec{m}_{j}$ in $\mathcal{M}_{NRT}$ needs only one
-parameter, the service cycle, to model the current request it
-issues.
-\end{description}
+\subsection{Research}
 
-Here, a question may arise, since each node has a global ID. Why
-don't we just map nodes' IDs within two hops into a group of
-frequency numbers and assign those numbers to all nodes within two
-hops?
+Most research into hardware Trojans deal with using side-channel
+analysis to identify the malicious Trojan behavior~\cite{lee2005,
+agrawal2007, banga2008, banga2008a, jin2008, du2010, narasimhan2011,
+narasimhan2012, cao2013, davoodi2013, dworak2013, forte2013,
+liu2013, liu2014, bao2015}. This research uses power analysis, heat
+analysis, or other side-effects to determine that the hardware is
+executing abnormal logic. Unfortunately, this typically requires
+building a model based on a ``golden'' or known-good hardware, which
+is often not accessible. Furthermore, as chips become more complex,
+the Trojan logic become an increasingly smaller portion of the chip,
+which in turn reduces the side-channel behavior of the chip
+significantly. 
 
-\section{Simulator}
-\label{sec:sim}
+Other research has demonstrated the attacks that are possible by
+actually implementing Trojan behavior~\cite{king2008, jin2010,
+sturton2011, liu2013, jin2014, zhang2014}. This line of research
+shows that Trojan logic is feasible for an attack.
 
-If the model checker requests successors of a state which are not
-created yet, the state space uses the simulator to create the
-successors on-the-fly. To create successor states the simulator
-conducts the following steps.
-% enumerate
-\begin{enumerate}
-\item Load state into microcontroller model.
-\item Determine assignments needed for resolving nondeterminism.
-\item For each assignment.
-      \begin{enumerate}
-      \item either call interrupt handler or simulate effect of next instruction, or
-      \item evaluate truth values of atomic propositions.
-      \end{enumerate}
-\item Return resulting states.
-\end{enumerate}
-Figure~\ref{fig:one} shows a typical microcontroller C program that
-controls an automotive power window lift. The program is one of the
-programs used in the case study described in Section~\ref{sec:sim}.
-At first sight, the programs looks like an ANSI~C program. It
-contains function calls, assignments, if clauses, and while loops.
-% Figure
-\begin{figure}
-\caption{Code before preprocessing.}
-\label{fig:one}
-\end{figure}
+Of particular practical interest is a description of \emph{actual
+Trojan logic} discovered in the ProASIC3 Flash FPGA military
+chip~\cite{skorobogatov2012}. While in this case it was not proved
+that the logic introduced to the chip was intentionally malicious,
+nevertheless there existed functionality in the hardware that was
+explicitly denied by the hardware designer. 
 
-\subsection{Problem Formulation}
+Another avenue of research is to change the design of the chip itself,
+in order to improve the testability of the chip or to increase the
+effectiveness of the side-channel analysis~\cite{chakraborty2008,
+li2008, salmani2009, hicks2010, rosenfeld2011, waksman2011,
+bhunia2013, davoodi2013, rajendran2013, rolt2014}. This line of
+research attempts to rethink designing the hardware itself. However, a
+major drawback is that this can increase the cost of the hardware and
+it must be somehow mandated to be used in COTS components. 
 
-The objective of variable coalescence-based offset assignment is to find
-both the coalescence scheme and the MWPC on the coalesced graph. We start
-with a few definitions and lemmas for variable coalescence.
+JTAG is a main avenue of reverse engineering hardware, so some work
+has investigated the problem of securing JTAG access to
+hardware~\cite{rosenfeld2010, ren2015}. The main idea is to allow only
+authenticated users to have access to the JTAG functionality, however
+this increases the cost and complexity of implemented JTAG. 
 
-% Enunciations
-\begin{definition}[Coalesced Node (C-Node)]A C-node is a set of
-live ranges (webs) in the AG or IG that are coalesced. Nodes within the same
-C-node cannot interfere with each other on the IG. Before any coalescing is
-done, each live range is a C-node by itself.
-\end{definition}
+Another approach is to change the design of the chip to support
+runtime monitoring~\cite{waksman2010}. In this way, the hardware
+is monitoring itself, 
+rather than external analysis of
+side-channels. However, this has all the same drawbacks of changing
+the design of hardware, in addition to not being robust in the face of
+a powerful attacker who is able to alter the design. 
 
-\begin{definition}[C-AG (Coalesced Access Graph)]The C-AG is the access
-graph after node coalescence, which is composed of all C-nodes and C-edges.
-\end{definition}
+Recent approaches suggest to use machine-learning techniques to
+identify the Trojan logic~\cite{haider2015}. Another approach attempts
+to use a formal verification technique in order to prove that no
+malicious logic was added to the hardware~\cite{guo2015}.
 
-\begin{lemma}
-The C-MWPC problem is NP-complete.
-\end{lemma}
-\begin{proof} C-MWPC can be easily reduced to the MWPC problem assuming a
-coalescence graph without any edge or a fully connected interference graph.
-Therefore, each C-node is an uncoalesced live range after value separation
-and C-PC is equivalent to PC. A fully connected interference graph is made
-possible when all live ranges interfere with each other. Thus, the C-MWPC
-problem is NP-complete.
-\end{proof}
+Finally, there are several surveys conducted on hardware security,
+which provide a good overview of the field~\cite{wang2008,
+tehranipoor2010, guin2014, guin2014a, guin2014b}.
 
-\begin{lemma}[Lemma Subhead]The solution to the C-MWPC problem is no
-worse than the solution to the MWPC.
-\end{lemma}
-\begin{proof}
-Simply, any solution to the MWPC is also a solution to the
-C-MWPC. But some solutions to C-MWPC may not apply to the MWPC (if any
-coalescing were made).
-\end{proof}
+Important problems include how to deal with counterfeit chips, better
+non-destructive examination methods, continuous monitoring of the
+integrity not just at boot time, and detection of backdoors and 
+``undocumented features''.  Hardware design can also be done to
+aid this process, e.g., having some part of the chip consume more power
+to make it more identifiable for authentication purposes.  Other
+possibilities include running multiple chips with different
+implementations side-by-side and comparing results to detect unexpected
+behavior.
+
+\subsection{Suggested Focus Areas}
+
+A key problem with hardware security is non-destructive IC
+examination, identification, and authentication - how to ensure that
+the chip that is designed is what is actually fabricated, with no
+additional logic.
+
+An additional neglected area is how to detect malicious Trojan logic
+in third-party components. This would require some type of static
+analysis or simulated dynamic analysis of third-party components,
+which could detect Trojan logic.
+
+Another approach that could be effective is how to properly test the
+functionality of hardware after it has been fabricated. This could
+include changing the design of the chip to allow better/more guided
+fuzz testing of the chip itself, in order to discover the Trojan
+logic.
+
+Finally, a prevention approach could be taken, to monitoring the upper
+layers of the computing stack for attempts to exploit the underlying
+hardware. This can also include changing or altering the firmware
+layer in such a way that it is not possible to exercise the Trojan
+logic, potentially using randomization techniques similar to ASLR. 
+
+\section{Firmware}
+
+%Note: I did not remove the previous versions of those paragraphs
+%(commented them) so feel free to check the previous versions and 
+%revert them if my changes have problems.
+
+%Firmware is the layer of software that sits and interacts directly
+%with the hardware. Typically, the firmware is controlled from the
+%upper layers by device drivers in the Operating System.
+
+%Faris:
+Firmware is the layer of software that sits and interacts directly
+with the hardware. Typically, the firmware is controlled by the
+device drivers in the upper layers of the Operating System.
+
+%Many different hardware contain firmware, for instance the boot BIOS
+%on a motherboard is a form of firmware, embedded systems often contain
+%specific firmware, hardware peripherals such as network cards contain
+%firmware as well. We consider all such areas as firmware.
+
+%Faris:
+Many different hardware contain firmware. For instance: the boot BIOS
+on a motherboard, embedded systems that contain
+specific firmware, hardware peripherals such as network cards. 
+We consider all such areas as firmware.
+
+%The key traits of firmware is that, although it is binary code, it is
+%operating/interacting directly with the hardware, so there are no
+%%OS-style abstraction layers such as virtual memory, well-defined
+%system calls, or hardware abstraction. Therefore, each firmware is
+%binary code which is specifically tailored to a specific hardware
+%platform.
+
+%Faris:
+Although firmware is binary code, it is
+operating/interacting directly with the hardware, so there are no
+OS-style abstraction layers such as virtual memory, well-defined
+system calls, or hardware abstraction which is the key trait of firmware. 
+Therefore, each firmware is specifically tailored to a specific hardware platform.
+
+%Due to the hardware-specific nature of firmware, \emph{reverse
+%	engineering} is critical to understanding the firmware. In addition,
+%reverse engineering is particularly challenging because source code is
+%frequently unavailable, and vendors' desire to protect their
+%intellectual property makes them actively obfuscate their
+%firmware. All this means that, extracting semantically useful
+%information from firmware is a key first step to performing any
+%security analysis of the firmware.
+
+%Faris:
+Due to the hardware-specific nature of firmware, \emph{reverse
+	engineering} is critical to understand it. In addition,
+reverse engineering is particularly challenging because the source code is
+frequently unavailable, and vendors' desire to protect their
+intellectual property makes them actively obfuscate their
+firmware. This means, extracting semantically useful
+information from firmware is the first and key step to perform any
+security analysis of the firmware.
+
+\subsection{Threats}
+
+As the lowest-level of software code in the computing stack, threats
+to firmware can compromise the security of the entire machine.
+Firmware security is concerned with two main threats: (1)
+vulnerabilities in the firmware code itself which allow an attacker to
+execute arbitrary code with the capabilities of the firmware and (2)
+firmware with intentional Trojan (backdoor) capabilities.
+
+%Vulnerabilities in the firmware code allow an attacker to execute
+%arbitrary code with the permissions of the firmware. The class of
+%vulnerabilities are not unique to firmware, as they are the same class
+%of vulnerabilities that infect traditional binary software (buffer
+%overflows, logic flaws, etc.). However, firmware typically has full
+%control over the entire computing system, therefore vulnerabilities in
+%firmware are much more severe than those in the application layer. In
+%addition, if an attacker is able to persist their exploit --- because the
+%compromise occurs at such a low layer of the computing system --- the
+%attacker can persist \emph{even after reinstalling the operating
+%	system or application}.
+
+%Faris:
+Vulnerabilities in the firmware code allow an attacker to execute
+arbitrary code with the permissions of the firmware. The class of
+vulnerabilities are not unique to firmware, as they are the same class
+of vulnerabilities that infect traditional binary software (buffer
+overflows, logic flaws, etc.). However, firmware typically has full
+control over the entire computing system, therefore vulnerabilities in
+firmware are much more severe than those in the application layer. In
+addition, the attacker may remain in the system because the
+compromise occurs at such a low layer of the computing system so the
+exploit persists \emph{even after reinstalling the operating
+	system or application}.
+
+%The attack surface for firmware varies depending on where it is used.
+%In the most general case, the attacks can come from the upper layers,
+%specifically the Operating System or Hypervisor layers, as these are
+%the layers of the computing stack that can directly communicate with the
+%firmware. However, other firmware can be attacked either directly
+%through the Hardware layer itself, or through the data being
+%transmitted through the firmware from the hardware. For instance, a
+%network card firmware could be attacked through network traffic that
+%the firmware processes.
+
+%Faris:
+The attack surface for firmware varies depending on where it is used.
+In the general case, the attacks can come from the upper layers,
+specifically the Operating System or Hypervisor layers, as these are
+the layers of the computing stack that can directly communicate with the
+firmware. However, other firmware can be attacked either directly
+through the Hardware layer, or through the data being
+transmitted through the firmware from the hardware. For instance, a
+network card firmware could be attacked through network traffic that
+the firmware processes.
+
+Traditional vulnerability analysis is not effective on firmware, due
+to the specificity of the firmware for the specific hardware and the
+lack of a well-defined operating system abstraction for the firmware
+code. In essence, each firmware is a custom binary with little in the
+way of assumptions that vulnerability analysis can take advantage of. 
+
+%Trojan capabilities in the firmware itself can allow a system to be
+%remotely controlled or accessed. This is similar to a vulnerability,
+%in that an attacker is able to control the firmware, however the key
+%difference lies in the fact that Trojan behavior will be intentionally
+%obfuscated by an attacker, whereas a vulnerability is accidentally
+%introduced by a benign developer. Therefore, Trojan behavior is 
+%more difficult to detect, because there is an active adversary who is
+%intentionally obfuscating the behavior. 
+
+%Faris:
+Trojan capabilities in the firmware can allow a system to be
+remotely controlled or accessed. This is similar to a vulnerability,
+in that an attacker is able to control the firmware, however the key
+difference lies in the fact that Trojan behavior can be intentionally
+obfuscated by an attacker, whereas a vulnerability can accidentally
+introduced by a benign developer. Therefore, Trojan behavior is 
+difficult to detect.
+
+%Vulnerabilities in the firmware and Trojan capabilities are related
+%because both require \emph{understanding} the behavior and semantics
+%of the firmware code. This is why reverse engineering is such a
+%critical component of securing the threats against the firmware layer:
+%in order to detect either vulnerabilities or Trojan functionality, an
+%automated tool must first understand the semantics of the particular
+%firmware/hardware combination. 
+
+%Faris:
+Vulnerabilities in the firmware and Trojan capabilities are related
+because both require \emph{understanding} the behavior and semantics
+of the firmware code. This is why reverse engineering is such a
+critical component of securing the firmware layer against the threats.
+In order to detect vulnerabilities or trojan functionality, an
+automated tool must understand the semantics of the particular
+firmware/hardware combination. 
+
+\subsection{Research}
+%Faris: Some fixes below. 
+Researchers have attempted to identify real-world attacks on firmware
+code~\cite{tsow2006, cui2010, duflot2011, basnight2013, cui2013,
+	zaddach2013, zaddach2013a, maskiewicz2014, stuttgen2015}. These
+attacks are particularly effective, and researchers have shown that
+these are able to persist through a reboot and cannot be detected by
+the upper layers. 
+
+Other approaches are about how to prevent the tampering of
+firmware~\cite{adelstein2002, zhou2007, zhou2009}. These protect from
+the threat of tampering or altering the firmware, however it does not
+address vulnerable firmware. 
+
+Another approach includes runtime monitoring into the
+firmware, so that compromises can be detected~\cite{cui2010a,
+	cui2011}. This approach is further complicated by the lack of
+abstractions in the firmware environment. 
+
+Recent work has looked into the problem of updating the design of the
+firmware so that it has security features, such as memory handling and
+avoiding information leakage~\cite{koeberl2014, kauer2007}. However,
+forcing firmware developers to use such features is an open issue.
+
+Very few work has looked into how to reverse engineer and understand the
+firmware~\cite{zaddach2014}. This problem is of particular interest,
+as understanding the semantics of the firmware and how it interacts
+with hardware is a key challenge. 
+
+Recent work has looked into how to detect vulnerabilities in
+firmware~\cite{davidson2013, costin2014, shoshitaishvili2015}. One of
+these has an excellent website\footnote{\url{http://firmware.re}}
+that contains the results of their reverse engineering and
+vulnerability analysis~\cite{costin2014}.
+
+\subsection{Suggested Focus Areas}
+%Faris: Some fixes below.
+Of all the layers, firmware has received the least attention from the
+research community. Therefore, we believe that focus on this research
+area will yield significant dividends. 
+
+The major challenge with preventing firmware vulnerabilities is how to decouple
+firmware from the hardware, potentially using emulation of the
+hardware, in order to aid the analysis of the firmware. 
+
+In a similar vein, there is need for automated reverse engineering tools,
+including analysis of memory layouts, code modules, even answering the
+simple question of what is code in a firmware binary and what is data.
+
+Finally, even if we find vulnerabilities or Trojan logic in a
+firmware, there is still the unanswered question of how to patch or
+update the functionality of the firmware while still guaranteeing the
+behavior of the firmware. This is particularly complicated due to the
+real-time requirements of the firmware and the potentially concurrent
+executions.  
 
 \section{Performance Evaluation}
 
@@ -511,30 +717,6 @@ put forth. During the MMSN design, we analyze and evaluate different
 choices for frequency assignments and also discuss the nonuniform
 back-off algorithms for the slotted media access design.
 
-% Start of "Sample References" section
-
-\section{Typical references in new ACM Reference Format}
-A paginated journal article \cite{Abril07}, an enumerated
-journal article \cite{Cohen07}, a reference to an entire issue \cite{JCohen96},
-a monograph (whole book) \cite{Kosiur01}, a monograph/whole book in a series (see 2a in spec. document)
-\cite{Harel79}, a divisible-book such as an anthology or compilation \cite{Editor00}
-followed by the same example, however we only output the series if the volume number is given
-\cite{Editor00a} (so Editor00a's series should NOT be present since it has no vol. no.),
-a chapter in a divisible book \cite{Spector90}, a chapter in a divisible book
-in a series \cite{Douglass98}, a multi-volume work as book \cite{Knuth97},
-an article in a proceedings (of a conference, symposium, workshop for example)
-(paginated proceedings article) \cite{Andler79}, a proceedings article
-with all possible elements \cite{Smith10}, an example of an enumerated
-proceedings article \cite{VanGundy07},
-an informally published work \cite{Harel78}, a doctoral dissertation \cite{Clarkson85},
-a master's thesis: \cite{anisi03}, an online document / world wide web resource \cite{Thornburg01}, \cite{Ablamowicz07},
-\cite{Poker06}, a video game (Case 1) \cite{Obama08} and (Case 2) \cite{Novak03}
-and \cite{Lee05} and (Case 3) a patent \cite{JoeScientist001},
-work accepted for publication \cite{rous08}, 'YYYYb'-test for prolific author
-\cite{SaeediMEJ10} and \cite{SaeediJETC10}. Other cites might contain
-'duplicate' DOI and URLs (some SIAM articles) \cite{Kirschmer:2010:AEI:1958016.1958018}.
-Boris / Barbara Beeton: multi-volume works as books
-\cite{MR781536} and \cite{MR781537}.
 
 % Appendix
 \appendix
@@ -566,7 +748,6 @@ Italia for providing specifications about the application scenario.
 
 % Bibliography
 \bibliographystyle{ACM-Reference-Format-Journals}
-\bibliography{acmsmall-sample-bibfile}
 \bibliography{papers}
                              % Sample .bib file with references that match those in
                              % the 'Specifications Document (V1.5)' as well containing
