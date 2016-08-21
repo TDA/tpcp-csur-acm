@@ -661,42 +661,272 @@ behavior of the firmware. This is particularly complicated due to the
 real-time requirements of the firmware and the potentially concurrent
 executions.  
 
-\section{Performance Evaluation}
+\section{Bus and Interconnect}
 
-During all the experiments, the Geographic Forwarding (GF)
-[Akyildiz 2001] routing protocol is used. GF exploits geographic
-information of nodes and conducts local data-forwarding to achieve
-end-to-end routing. Our simulation is
-configured according to the settings in
-Table~\ref{tab:one}. Each run lasts for 2 minutes and
-repeated 100 times. For each data value we present in the results,
-we also give its 90\% confidence interval.
-% Table
-\begin{table}%
-\tbl{Simulation Configuration\label{tab:one}}{%
-\begin{tabular}{|l|l|}
-\hline
-TERRAIN{$^a$}   & (200m$\times$200m) Square\\\hline
-Node Number     & 289\\\hline
-Node Placement  & Uniform\\\hline
-Application     & Many-to-Many/Gossip CBR Streams\\\hline
-Payload Size    & 32 bytes\\\hline
-Routing Layer   & GF\\\hline
-MAC Layer       & CSMA/MMSN\\\hline
-Radio Layer     & RADIO-ACCNOISE\\\hline
-Radio Bandwidth & 250Kbps\\\hline
-Radio Range     & 20m--45m\\\hline
-\end{tabular}}
-\begin{tabnote}%
-\Note{Source:}{This is a table
-sourcenote. This is a table sourcenote. This is a table
-sourcenote.}
-\vskip2pt
-\Note{Note:}{This is a table footnote.}
-\tabnoteentry{$^a$}{This is a table footnote. This is a
-table footnote. This is a table footnote.}
-\end{tabnote}%
-\end{table}%
+The Bus and Interconnect is an abstract layer of the computing system
+which allows the firmware and hardware to communicate with each other.
+Different computing architectures have different technical
+implementations of the bus and interconnect. For instance, the
+communication network in the automotive system, which has received
+significant attention from the research community, uses a CAN bus to
+communicate. Modern motherboards use either a Northbound or Southbound
+bus --- such as USB --- to communicate between the CPU and other peripheral devices.
+
+\subsection{Threats}
+
+Depending on the technical architecture of the bus and interconnect
+layer, the bus can be used either purely for communication or for
+other functionality as well. For instance, the CAN bus is only used to
+allow different hardware components to communicate. However, on modern
+motherboards, techniques such as Direct Memory Access (DMA) allow a
+peripheral device that is connected to the bus to directly access the
+system's memory, without going through the CPU. 
+
+In the case of the bus and interconnect being used as a communication
+medium, then the classic threats are the same security concerns as
+other mediums of communication: communication integrity and
+confidentiality. A malicious device on the bus can impersonate another
+device and send messages on the bus as the impersonated device. On an
+automotive system, researchers have demonstrated that by compromising
+a single device attached to the system's CAN bus allows an attacker to
+have complete control over all functions of the automobile, by
+impersonating messages on the CAN bus. In addition to impersonating
+messages, an attacker on the bus and interconnect layer can listen to
+messages on the bus, potentially eavesdropping on sensitive messages.
+
+If the bus and interconnect layer offers advanced functionality, such
+as the DMA example, then the devices that an attacker is able to connect
+to the bus could take advantage of this functionality. In the case of
+DMA, this means that any device on the bus has full access to the
+physical memory of the system, therefore the attacker has complete
+control over the upper layers of the computing system (hypervisor,
+operating system, and application).
+
+The difficulty of addressing the threats of the bus and interconnect
+layer is the diversity and specificity of the specific bus and
+interconnect technology. Often, these were created without
+consideration for security needs, therefore, as a communication
+mechanism they lack authentication from the design. In addition, as
+the bus and interconnect layer cause different hardware to
+communicate, all hardware must agree on the protocol to talk on the
+bus. Therefore, adding security to the bus and interconnect protocol
+is difficult in legacy systems.  
+
+\subsection{Research}
+
+A major area of research in the Bus and Interconnect layer is work
+that shows the dangers of a bus and interconnect that allows malicious
+devices to either impersonate devices on the bus or leverage bus
+capabilities, particularly in the automotive area~\cite{bonkoski2013,checkoway2011,hoppe2008,koscher2010,rouf2010,sang2010}.
+
+The other major area of research is to apply encryption to devices on
+the bus and interconnect~\cite{groza2012,herrewege2011,jiang2012,schweppe2011,stewin2014,szilagyi2010}.
+In this way, malicious devices on the bus cannot impersonate other devices. 
+However, a key problem with this research direction is how to distribute the keys of
+the devices, which is typically done by distributing them in hardware.
+Unfortunately, this approach is brittle, as it disallows new devices
+from accessing the bus and interconnect.
+
+Other research has investigated how to ensure the integrity of devices
+attached to the bus and interconnect using attestation
+techniques~\cite{li2010,li2011}. These techniques attempt to ensure
+that only authorized and unmodified devices are attached to the bus
+and interconnect. However, this research has the problem of how to
+allow third-party devices to access the bus.
+
+A key problem is how to perform secure updates to devices attached to
+the bus and the interconnect~\cite{larson2008}. This is a challenge
+that also has similarities with the firmware layer.
+
+In order to discover malicious communication, researchers have
+utilized data flow tracking techniques to discover how the data flows
+between devices connect to the bus and interconnect
+layers~\cite{schweppe2012}. Using these techniques, the researchers
+are able to identify malicious flows or potential vulnerabilities by
+analyzing the way that data flows throughout the system.
+
+Other researchers have explored modeling either the system itself
+or the behavior of the devices on the bus~\cite{stewin2013a,drolia2011}. 
+If the device behavior or the system behavior does not
+match the learned model, then an alert is triggered. In this way,
+these techniques are similar to anomaly detection techniques, with
+similar benefits and drawbacks. 
+
+In order to address the issue of devices on the bus able to access
+capabilities unauthorized, researchers have tackled the similar
+problem of reducing the Trusted Computing Base, essentially reducing
+the functionality of the bus and interconnect
+layer~\cite{vasudevan2012,zhang2013,zhou2009}. In this way, if the
+functionality is not there on the bus, then a malicious device cannot
+take advantage of it.
+
+Another approach is to leverage hardware features of the underlying
+bus and interconnect system to reduce the impact of an
+attack~\cite{wolf2012,wojtczuk2011}. However, as these hardware
+functionalities must be implemented, it's impact in legacy systems is
+limited.
+
+Finally, other research in this area has performed surveys of the
+research on this area~\cite{kleberger2011,studnia2013,thom2008,wolf2004,wolf2007,wright2011,zhao2002}.
+
+\subsection{Suggested Focus Areas}
+
+Further research in this area should focus on enabling better
+monitoring of the runtime of devices attached to the bus or
+interconnect. There is also the need to support logging of the bus or
+interconnect activity. This will enable detection of a malicious
+device on the bus or interconnect.
+
+Another promising area of research is the automated filtering of
+the bus communication, potentially allowing an administrator to define
+a policy for a specific bus or interconnect system. This would be
+particularly effective if it can be implemented on legacy bus and
+interconnect systems, with no modification to the devices.
+
+A different approach would be to secure the bus by only allowing
+authorized devices to attach to the bus. This could be a white-listing
+based approach or other policy-driven approach. However, the key
+question is how to identify a device, particularly a third-party
+device.
+
+While there has been some research on encrypting the communication on
+the bus, most has focused on pre-distributing the keys to devices on
+the bus. This approach is brittle, as new devices cannot be added to
+the bus easily. Therefore, further approaches should be investigated,
+such as using attribute-based encryption to be able to encrypt and
+distribute messages on the bus without prior sharing of keys.
+
+\section{Hypervisor}
+
+The purpose of the hypervisor layer is to provide virtualization
+techniques for the upper layers of the computing stack. In essence,
+the Hypervisor layer provides a virtualization or emulation of the
+lower layers of the computing stack, so that multiple Operating
+Systems, which each assume that they are the sole users of the
+underlying hardware, can run concurrently on the same hardware.
+
+For discussing the Hypervisor layer, we use the term \emph{host} to
+define the hypervisor itself (which, in some cases can be an Operating
+System) and the \emph{guest} is the Operating System that is running
+on the hypervisor. A host can run multiple guest Operating Systems.
+
+Hypervisors have a number of benefits, from allowing greater sharing
+and usage of hardware resources, to improving the isolation of the
+Operating Systems. The security benefits of using Hypervisors comes
+from each guest Operating System being isolated from the other. In
+theory, this means that a compromise of a guest Operating System will
+be isolated to only that Operating System, and the attack should not
+spread to other guest Operating Systems.
+
+\subsection{Threats}
+
+The central threat to the Hypervisor layer is from attackers in a
+guest Operating System exploiting a vulnerability in the hypervisor
+itself to gain access to the actual hardware or to propagate their
+attack to the other guest Operating Systems that are running in the
+hypervisor. As the Hypervisor layer is essentially emulating the
+hardware for the guest operating systems, it has a large attack
+surface. Furthermore, modern hypervisors, in an attempt to increase
+the performance of the hypervisor, frequently allow guest Operating
+Systems direct access to the hardware. If the hardware does not
+provide for full isolation (i.e., it is not hypervisor-aware), then an
+attacker can leverage this hardware to tamper or extract sensitive
+information from other guest Operating Systems.
+
+In modern hypervisors, the hypervisors frequently provide isolation
+from a well-behaved guest Operating System, as the guest Operating
+System is assumed to be benign. This assumption can be unfounded, as
+the guest Operating System can be hostile and can attempt to exploit
+or crash the hypervisor. 
+
+Another threat actually stems from the Hypervisor itself being
+untrusted. In the cloud computing environment, the guest Operating
+System does not trust the underlying Hypervisor, as it is controlled
+by a third-party. In this case, the Hypervisor can spy on the guest
+or alter the memory of the guest.
+
+\subsection{Research}
+
+One area of research is to leverage the vantage point of the
+Hypervisor to monitor the guest for security
+violations~\cite{karger1991,barham2003}, intrusion
+detections~\cite{dunlap2002,garfinkel2003a,kourai2005,chen2008,garfinkel2003b},
+ checking the integrity of the guest Operating
+system~\cite{seshadri2006,mccune2010}, and identifying rootkits present
+in the guest Operating System~\cite{jones2008,grace2010}. This work
+assumes that the guest can be compromised and that the Hypervisor is
+trusted, which, due to vulnerabilities in the Hypervisor, is not
+always true.
+
+A significant problem in monitoring or otherwise inspecting a guest
+Operating System from the hypervisor layer is the \emph{semantic gap}
+problem, where the Hypervisor has no outside knowledge of the
+guest-specific Operating System constructs. Therefore, research has
+investigated how to overcome this semantic gap~\cite{jones2006,christodorescu2009,srinivasan2011}.
+
+Further work in this line has approached the problem of how to monitor
+the hypervisor itself by leveraging hardware features~\cite{azab2010}.
+
+In order to build a secure Hypervisor, the lower layers of the
+computing system must also be trusted. Therefore, research into
+establishing a Trusted Computing Base, which validates the integrity
+of the lower levels for the guest Operating System~\cite{arbaugh1997,sailer2004,singaravelu2006}
+ is important for ensuring the security
+of the Hypervisor.
+
+One problem of using the Hypervisor as a security primitive is that it
+is part of the Trusted Computing Base for the upper layers of the
+computing platform. Therefore, attempts have been made to reduce the
+trusted base of the Hypervisor itself~\cite{murray2008,shinagawa2009,colp2011,wang2012}.
+
+Other research has looked at creating a secure
+Hypervisor~\cite{robin2000,belay2012,szefer2011,vasudevan2013} with
+the possibility of adding functionality to the Hypervisor to support
+closed guest Operating Systems~\cite{garfinkel2003}, offering
+applications running in the guest Operating System to hide information
+from the guest Operating System~\cite{chen2008,yang2008,jin2011,szefer2012,azab2011,zhang2011,jin2011a,szefer2011a},
+ secure information flow between the guest Operating System drivers and I/O
+devices~\cite{cheng2013}, or designing the hypervisor so that it can
+prove that it did not tamper with the guest Operating
+System~\cite{gu2011}.
+
+Another approach to improve the security of the Hypervisor is to
+remove the duplicated components from the guest Operating System
+layer~\cite{kivity2014,madhavapeddy2015}, which effectively reduces
+the attack surface of the Operating System layer.
+
+Another interesting approach is to run traditional network middleware
+boxes, such as firewalls and Intrusion Detection Systems, as a guest
+Operating System of a Hypervisor~\cite{martins2014}.
+
+Finally, there have been attempts to introduce traditional
+application-level security features to Hypervisors, in order to reduce
+or prevent vulnerabilities, such as control-flow
+integrity~\cite{wang2010} or manual vulnerability
+analysis~\cite{Perez-Botero2013}.
+
+\subsection{Focus Areas}
+
+As the hypervisor is typically a monolithic trusted entity, research
+should be performed to reduce the trust in the hypervisor. One avenue
+could be to have fine grained access control within the hypervisor, so
+that different policies can be set to the guests hosted by the
+hypervisor.
+
+In a similar area, we believe that further research into reducing the
+attack surface of the hypervisor is necessary. Specifically, the
+hypervisor can be customized based on the applications and workload
+necessary. 
+
+Hypervisors, despite their obvious benefits, have not been applied to
+real-time systems. Further research must be done to allow reliable and
+robust hypervisors in a constrained real-time computing environment.
+
+Testing hypervisors is currently a difficult and essentially manual
+process. There is currently no equivalent to fuzz testing a hypervisor
+implementation, possibly because there are no models for attacks
+against a hypervisor. Further research in increasing the testability
+and automated analysis of hypervisor reliability would improve security.
 
 \section{Conclusions}
 
