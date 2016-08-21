@@ -369,9 +369,9 @@ attempts to detect them.
 
 Most research into hardware Trojans deal with using side-channel
 analysis to identify the malicious Trojan behavior~\cite{lee2005,
-agrawal2007, banga2008, banga2008a, jin2008, du2010, narasimhan2011,
-narasimhan2012, cao2013, davoodi2013, dworak2013, forte2013,
-liu2013, liu2014, bao2015}. This research uses power analysis, heat
+agrawal2007,banga2008,banga2008a,jin2008,du2010,narasimhan2011,
+narasimhan2012,cao2013,davoodi2013,dworak2013,forte2013,
+liu2013,liu2014,bao2015}. This research uses power analysis, heat
 analysis, or other side-effects to determine that the hardware is
 executing abnormal logic. Unfortunately, this typically requires
 building a model based on a ``golden'' or known-good hardware, which
@@ -381,8 +381,8 @@ which in turn reduces the side-channel behavior of the chip
 significantly. 
 
 Other research has demonstrated the attacks that are possible by
-actually implementing Trojan behavior~\cite{king2008, jin2010,
-sturton2011, liu2013, jin2014, zhang2014}. This line of research
+actually implementing Trojan behavior~\cite{king2008,jin2010,
+sturton2011,liu2013,jin2014,zhang2014}. This line of research
 shows that Trojan logic is feasible for an attack.
 
 Of particular practical interest is a description of \emph{actual
@@ -395,15 +395,15 @@ explicitly denied by the hardware designer.
 Another avenue of research is to change the design of the chip itself,
 in order to improve the testability of the chip or to increase the
 effectiveness of the side-channel analysis~\cite{chakraborty2008,
-li2008, salmani2009, hicks2010, rosenfeld2011, waksman2011,
-bhunia2013, davoodi2013, rajendran2013, rolt2014}. This line of
+li2008,salmani2009,hicks2010,rosenfeld2011,waksman2011,
+bhunia2013,davoodi2013,rajendran2013,rolt2014}. This line of
 research attempts to rethink designing the hardware itself. However, a
 major drawback is that this can increase the cost of the hardware and
 it must be somehow mandated to be used in COTS components. 
 
 JTAG is a main avenue of reverse engineering hardware, so some work
 has investigated the problem of securing JTAG access to
-hardware~\cite{rosenfeld2010, ren2015}. The main idea is to allow only
+hardware~\cite{rosenfeld2010,ren2015}. The main idea is to allow only
 authenticated users to have access to the JTAG functionality, however
 this increases the cost and complexity of implemented JTAG. 
 
@@ -422,7 +422,7 @@ malicious logic was added to the hardware~\cite{guo2015}.
 
 Finally, there are several surveys conducted on hardware security,
 which provide a good overview of the field~\cite{wang2008,
-tehranipoor2010, guin2014, guin2014a, guin2014b}.
+tehranipoor2010,guin2014,guin2014a,guin2014b}.
 
 Important problems include how to deal with counterfeit chips, better
 non-destructive examination methods, continuous monitoring of the
@@ -616,25 +616,25 @@ firmware/hardware combination.
 \subsection{Research}
 %Faris: Some fixes below. 
 Researchers have attempted to identify real-world attacks on firmware
-code~\cite{tsow2006, cui2010, duflot2011, basnight2013, cui2013,
-	zaddach2013, zaddach2013a, maskiewicz2014, stuttgen2015}. These
+code~\cite{tsow2006,cui2010,duflot2011,basnight2013,cui2013,
+zaddach2013,zaddach2013a,maskiewicz2014,stuttgen2015}. These
 attacks are particularly effective, and researchers have shown that
 these are able to persist through a reboot and cannot be detected by
 the upper layers. 
 
 Other approaches are about how to prevent the tampering of
-firmware~\cite{adelstein2002, zhou2007, zhou2009}. These protect from
+firmware~\cite{adelstein2002,zhou2007,zhou2009}. These protect from
 the threat of tampering or altering the firmware, however it does not
 address vulnerable firmware. 
 
 Another approach includes runtime monitoring into the
 firmware, so that compromises can be detected~\cite{cui2010a,
-	cui2011}. This approach is further complicated by the lack of
+cui2011}. This approach is further complicated by the lack of
 abstractions in the firmware environment. 
 
 Recent work has looked into the problem of updating the design of the
 firmware so that it has security features, such as memory handling and
-avoiding information leakage~\cite{koeberl2014, kauer2007}. However,
+avoiding information leakage~\cite{koeberl2014,kauer2007}. However,
 forcing firmware developers to use such features is an open issue.
 
 Very few work has looked into how to reverse engineer and understand the
@@ -643,7 +643,7 @@ as understanding the semantics of the firmware and how it interacts
 with hardware is a key challenge. 
 
 Recent work has looked into how to detect vulnerabilities in
-firmware~\cite{davidson2013, costin2014, shoshitaishvili2015}. One of
+firmware~\cite{davidson2013,costin2014,shoshitaishvili2015}. One of
 these has an excellent website\footnote{\url{http://firmware.re}}
 that contains the results of their reverse engineering and
 vulnerability analysis~\cite{costin2014}.
