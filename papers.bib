@@ -2313,19 +2313,6 @@
   year		= {2013}
 }
 
-@InProceedings{felmetsger2010,
-  author          = {Felmetsger, Viktoria and Cavedon, Ludovico and Kruegel, Christopher and Vigna, Giovanni},
-  title           = {{Toward Automated Detection of Logic Vulnerabilities in Web Applications}},
-  booktitle       = {Proceedings of the USENIX Security Symposium},
-  year            = {2010},
-  address         = {Washington, DC},
-  month           = {aug},
-  file            = {:Users/adamd/Dropbox/Documents/Mendeley Desktop/2010 -
-		  Felmetsger et al. - Toward Automated Detection of Logic
-		  Vulnerabilities in Web Applications.pdf:pdf},
-  mendeley-groups = {6 - Application/Logic and implementation flaws},
-}
-
 @Article{ford2008,
   abstract	= {Code sandboxing is useful for many purposes, but most
 		  sandboxing techniques require kernel modifications, do not
@@ -2563,21 +2550,6 @@
   year		= {2003}
 }
 
-@article{garfinkel2003b,
-	abstract = {Today's architectures for intrusion detection force the IDS designer to make a difficult choice. If the IDS resides on the host, it has an excellent view of what is happening in that host's software, but is highly susceptible to attack. On the other hand, if the IDS resides in the network, it is more resistant to attack, but has a poor view of what is happening inside the host, making it more susceptible to evasion. In this paper we present an architecture that retains the visibility of a host-based IDS, but pulls the IDS outside of the host for greater attack resistance. We achieve this through the use of a virtual machine monitor. Using this approach allows us to isolate the IDS from the monitored host but still retain excellent visibility into the host's state. The VMM also offers us the unique ability to completely mediate interactions between the host software and the underlying hardware. We present a detailed study of our architecture, including Livewire, a prototype implementation. We demonstrate Livewire by implementing a suite of simple intrusion detection policies and using them to detect real attacks.},
-	author = {Garfinkel, Tal and Rosenblum, Mendel},
-	doi = {10.1109/SP.2011.11},
-	file = {::},
-	isbn = {978-1-4577-0147-4},
-	journal = {Proc. Netw. Distrib. Syst. Secur. {\ldots}},
-	mendeley-groups = {4 - Hypervisor},
-	pages = {253--285},
-	title = {{A Virtual Machine Introspection Based Architecture for Intrusion Detection}},
-	url = {http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.11.8367{\&}rep=rep1{\&}type=pdf$\backslash$nhttp://www.isoc.org/isoc/conferences/ndss/03/proceedings/papers/13.pdf},
-	volume = {1},
-	year = {2003}
-}
-
 
 @Article{garg2013,
   abstract	= {In industry, software testing and coverage-based metrics
@@ -2718,24 +2690,20 @@
   year		= {2014}
 }
 
-@Article{grace2010,
-  author	= {Grace, Michael and Wang, Zhi and Srinivasan, Deepa and Li,
-		  Jinku and Jiang, Xuxian and Liang, Zhenkai and Liakh,
-		  Siarhei},
-  doi		= {10.1007/978-3-642-16161-2{\_}10},
-  file		= {:Users/adamd/Dropbox/Documents/Mendeley Desktop/2010 -
+@Article{Grace2010,
+  author   = {Grace, Michael and Wang, Zhi and Srinivasan, Deepa and Li, Jinku and Jiang, Xuxian and Liang, Zhenkai and Liakh, Siarhei},
+  title    = {{Transparent protection of commodity OS kernels using hardware virtualization}},
+  journal  = {Lecture Notes of the Institute for Computer Sciences, Social-Informatics and Telecommunications Engineering},
+  year     = {2010},
+  volume   = {50 LNICST},
+  pages    = {162--180},
+  doi      = {10.1007/978-3-642-16161-2{\_}10},
+  file     = {:Users/adamd/Dropbox/Documents/Mendeley Desktop/2010 -
 		  Grace et al. - Transparent protection of commodity OS
 		  kernels using hardware virtualization.pdf:pdf},
-  isbn		= {364216160X},
-  issn		= {18678211},
-  journal	= {Lecture Notes of the Institute for Computer Sciences,
-		  Social-Informatics and Telecommunications Engineering},
-  keywords	= {Harvard architecture,Split memory,Virtualization},
-  pages		= {162--180},
-  title		= {{Transparent protection of commodity OS kernels using
-		  hardware virtualization}},
-  volume	= {50 LNICST},
-  year		= {2010}
+  isbn     = {364216160X},
+  issn     = {18678211},
+  keywords = {Harvard architecture,Split memory,Virtualization},
 }
 
 @Article{grace2010,
@@ -7361,33 +7329,6 @@
   year		= {2015}
 }
 
-@InProceedings{sun2011,
-  annote	= {THIS PAPER HAS EXAMPLE OF EARS.
-		  
-		  Really good paper that discusses how to statically detect
-		  access control vulnerabilities.
-		  
-		  Requires developers to specificy user roles and starting
-		  points.
-		  
-		  They then statically create a context-free grammer of each
-		  page. They use this CFG to extract links.
-		  
-		  In this way, they statically build up the set of pages that
-		  a user{\&}{\#}039;s role can explicitally access. Then they
-		  explicitly try to access higher roles pages from a lower
-		  role. If they can, then they detect a vulnerability.},
-  author	= {Sun, Fangqi and Xu, Liang and Su, Zhendong},
-  booktitle	= {Proceedings of the 20th USENIX conference on Security
-		  (USENIX 2011)},
-  file		= {:Users/adamd/Dropbox/Documents/Mendeley Desktop/2011 -
-		  Sun, Xu, Su - Static Detection of Access Control
-		  Vulnerabilities in Web Applications.pdf:pdf},
-  title		= {{Static Detection of Access Control Vulnerabilities in Web
-		  Applications}},
-  year		= {2011}
-}
-
 @Article{sun2014,
   abstract	= {Native code is external, difficult to analyze, mostly
 		  computation. They isolate it by putting it in a different
@@ -8553,37 +8494,6 @@
   title		= {{User Interaction Design for Secure Systems}}
 }
 
-@Article{yee2009a,
-  abstract	= {This paper describes the design, implementation and
-		  evaluation of Native Client, a sandbox for untrusted x86
-		  native code. Native Client aims to give browser-based
-		  applications the computational performance of native
-		  applications without compromising safety. Native Client
-		  uses software fault isolation and a secure runtime to
-		  direct system interaction and side effects through
-		  interfaces managed by Native Client. Native Client provides
-		  operating system portability for binary code while
-		  supporting performance-oriented features generally absent
-		  from Web application programming environments, such as
-		  thread support, instruction set extensions such as SSE, and
-		  use of compiler intrinsics and hand-coded assembler. We
-		  combine these properties in an open architecture that
-		  encourages community review and 3rd-party tools.},
-  author	= {Yee, Bennet and Sehr, David and Dardyk, Gregory and Chen,
-		  J. Bradley and Muth, Robert and Ormandy, Tavis and Okasaka,
-		  Shiki and Narula, Neha and Fullagar, Nicholas},
-  doi		= {10.1109/SP.2009.25},
-  file		= {:C$\backslash$:/Users/ysafaeis/Desktop/Sandboxing/05207638.pdf:pdf}
-		  ,
-  isbn		= {9780769536330},
-  issn		= {10816011},
-  journal	= {Proceedings - IEEE Symposium on Security and Privacy},
-  pages		= {79--93},
-  title		= {{Native client: A sandbox for portable, untrusted x86
-		  native code}},
-  year		= {2009}
-}
-
 @Article{yin2010,
   abstract	= {In order to obtain and maintain control, kernel malware
 		  usually makes$\backslash$npersistent control flow
@@ -9243,17 +9153,6 @@
   url             = {http://dl.acm.org/citation.cfm?id=2046774},
 }
 
-@InProceedings{felmetsger10:logic,
-  author          = {Felmetsger, Viktoria and Cavedon, Ludovico and Kruegel, Christopher and Vigna, Giovanni},
-  title           = {{Toward Automated Detection of Logic Vulnerabilities in Web Applications}},
-  booktitle       = {Proc. USENIX Secur. Symp.},
-  year            = {2010},
-  address         = {Washington, DC},
-  month           = {aug},
-  file            = {:Users/schandramouli/Library/Application Support/Mendeley Desktop/Downloaded/Felmetsger et al. - 2010 - Toward Automated Detection of Logic Vulnerabilities in Web Applications(2).pdf:pdf},
-  mendeley-groups = {6 - Application/Modeling and Monitoring execution/Dynamic analysis},
-}
-
 @InProceedings{dalton09:nemesis,
   author          = {Dalton, Michael and Kozyrakis, Christos and Zeldovich, Nickolai},
   title           = {{Nemesis: Preventing Authentication {\&} Access Control Vulnerabilities in Web Applications}},
@@ -9315,42 +9214,6 @@
   keywords        = {all part,execution after redirect,granted without fee,hard copies,permission make digital,personal classroom use,provided copies,static analysis,web applications,work},
   mendeley-groups = {6 - Application/Logic and implementation flaws},
   url             = {http://dl.acm.org/citation.cfm?id=2046707.2046736},
-}
-
-@Article{garfinkel2003a,
-  author   = {Garfinkel, Tal and Rosenblum, Mendel},
-  title    = {{A Virtual Machine Introspection Based Architecture for Intrusion Detection}},
-  journal  = {Proc. Network and Distributed Systems Security {\ldots}},
-  year     = {2003},
-  volume   = {1},
-  pages    = {253--285},
-  abstract = {Today's architectures for intrusion detection force the
-		  IDS designer to make a difficult choice. If the IDS resides
-		  on the host, it has an excellent view of what is happening
-		  in that host's software, but is highly susceptible to
-		  attack. On the other hand, if the IDS resides in the
-		  network, it is more resistant to attack, but has a poor
-		  view of what is happening inside the host, making it more
-		  susceptible to evasion. In this paper we present an
-		  architecture that retains the visibility of a host-based
-		  IDS, but pulls the IDS outside of the host for greater
-		  attack resistance. We achieve this through the use of a
-		  virtual machine monitor. Using this approach allows us to
-		  isolate the IDS from the monitored host but still retain
-		  excellent visibility into the host's state. The VMM also
-		  offers us the unique ability to completely mediate
-		  interactions between the host software and the underlying
-		  hardware. We present a detailed study of our architecture,
-		  including Livewire, a prototype implementation. We
-		  demonstrate Livewire by implementing a suite of simple
-		  intrusion detection policies and using them to detect real
-		  attacks.},
-  doi      = {10.1109/SP.2011.11},
-  file     = {:Users/adamd/Dropbox/Documents/Mendeley Desktop/2003 -
-		  Garfinkel, Rosenblum - A Virtual Machine Introspection
-		  Based Architecture for Intrusion Detection.pdf:pdf},
-  isbn     = {978-1-4577-0147-4},
-  url      = {http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.11.8367{\&}amp;rep=rep1{\&}amp;type=pdf$\backslash$nhttp://www.isoc.org/isoc/conferences/ndss/03/proceedings/papers/13.pdf},
 }
 
 @InProceedings{kurmus2011,
@@ -9682,18 +9545,6 @@
   mendeley-groups = {6 - Application/Logic and implementation flaws},
 }
 
-@InProceedings{sun11:static-access-control,
-  author          = {Sun, Fangqi and Xu, Liang and Su, Zhendong},
-  title           = {{Static detection of access control vulnerabilities in web applications}},
-  booktitle       = {Proceedings of the 20th USENIX conference on Security (USENIX 2011)},
-  year            = {2011},
-  series          = {SEC'11},
-  pages           = {11},
-  address         = {Berkeley, CA, USA},
-  publisher       = {USENIX Association},
-  mendeley-groups = {6 - Application/Logic and implementation flaws},
-}
-
 @InProceedings{tan08:autoises,
   author          = {Tan, L and Zhang, X and Ma, X and Xiong, W and Zhou, Y},
   title           = {{AutoISES: Automatically Inferring Security Specifications and Detecting Violations}},
@@ -9741,36 +9592,6 @@
   isbn            = {978-931971-95-9},
   mendeley-groups = {6 - Application/Attack surface reduction},
   url             = {https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final60.pdf$\backslash$nhttp://dl.acm.org/citation.cfm?id=2362793.2362820},
-}
-
-@Article{yee2009,
-  author          = {Yee, Bennet and Sehr, David and Dardyk, Gregory and Chen, J. Bradley and Muth, Robert and Ormandy, Tavis and Okasaka, Shiki and Narula, Neha and Fullagar, Nicholas},
-  title           = {{Native client: A sandbox for portable, untrusted x86 native code}},
-  journal         = {Proceedings - IEEE Symposium on Security and Privacy},
-  year            = {2009},
-  pages           = {79--93},
-  abstract        = {This paper describes the design, implementation and
-		  evaluation of Native Client, a sandbox for untrusted x86
-		  native code. Native Client aims to give browser-based
-		  applications the computational performance of native
-		  applications without compromising safety. Native Client
-		  uses software fault isolation and a secure runtime to
-		  direct system interaction and side effects through
-		  interfaces managed by Native Client. Native Client provides
-		  operating system portability for binary code while
-		  supporting performance-oriented features generally absent
-		  from Web application programming environments, such as
-		  thread support, instruction set extensions such as SSE, and
-		  use of compiler intrinsics and hand-coded assembler. We
-		  combine these properties in an open architecture that
-		  encourages community review and 3rd-party tools.},
-  doi             = {10.1109/SP.2009.25},
-  file            = {:Users/adamd/Dropbox/Documents/Mendeley Desktop/2009 - Yee
-		  et al. - Native client A sandbox for portable, untrusted
-		  x86 native code.pdf:pdf},
-  isbn            = {9780769536330},
-  issn            = {10816011},
-  mendeley-groups = {6 - Application/Attack surface reduction},
 }
 
 @Article{zhang2013,
@@ -9875,6 +9696,78 @@ title = {{Rx}},
 url = {http://portal.acm.org/citation.cfm?doid=1275517.1275519},
 volume = {25},
 year = {2007}
+}
+
+@InProceedings{felmetsger2010,
+  author          = {Felmetsger, Viktoria and Cavedon, Ludovico and Kruegel, Christopher and Vigna, Giovanni},
+  title           = {{Toward Automated Detection of Logic Vulnerabilities in Web Applications}},
+  booktitle       = {Proceedings of the USENIX Security Symposium},
+  year            = {2010},
+  address         = {Washington, DC},
+  month           = {aug},
+  file            = {:Users/adamd/Dropbox/Documents/Mendeley Desktop/2010 -
+		  Felmetsger et al. - Toward Automated Detection of Logic
+		  Vulnerabilities in Web Applications.pdf:pdf},
+  mendeley-groups = {6 - Application/Logic and implementation flaws},
+}
+
+@Article{garfinkel2003b,
+  author          = {Garfinkel, Tal and Rosenblum, Mendel},
+  title           = {{A Virtual Machine Introspection Based Architecture for Intrusion Detection}},
+  journal         = {Proc. Netw. Distrib. Syst. Secur. {\ldots}},
+  year            = {2003},
+  volume          = {1},
+  pages           = {253--285},
+  abstract        = {Today's architectures for intrusion detection force the IDS designer to make a difficult choice. If the IDS resides on the host, it has an excellent view of what is happening in that host's software, but is highly susceptible to attack. On the other hand, if the IDS resides in the network, it is more resistant to attack, but has a poor view of what is happening inside the host, making it more susceptible to evasion. In this paper we present an architecture that retains the visibility of a host-based IDS, but pulls the IDS outside of the host for greater attack resistance. We achieve this through the use of a virtual machine monitor. Using this approach allows us to isolate the IDS from the monitored host but still retain excellent visibility into the host's state. The VMM also offers us the unique ability to completely mediate interactions between the host software and the underlying hardware. We present a detailed study of our architecture, including Livewire, a prototype implementation. We demonstrate Livewire by implementing a suite of simple intrusion detection policies and using them to detect real attacks.},
+  doi             = {10.1109/SP.2011.11},
+  file            = {::},
+  isbn            = {978-1-4577-0147-4},
+  mendeley-groups = {4 - Hypervisor},
+  url             = {http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.11.8367{\&}rep=rep1{\&}type=pdf$\backslash$nhttp://www.isoc.org/isoc/conferences/ndss/03/proceedings/papers/13.pdf},
+}
+
+@InProceedings{sun2011,
+  author          = {Sun, Fangqi and Xu, Liang and Su, Zhendong},
+  title           = {{Static Detection of Access Control Vulnerabilities in Web Applications}},
+  booktitle       = {Proceedings of the 20th USENIX conference on Security (USENIX 2011)},
+  year            = {2011},
+  series          = {SEC'11},
+  pages           = {11},
+  address         = {Berkeley, CA, USA},
+  publisher       = {USENIX Association},
+  annote          = {THIS PAPER HAS EXAMPLE OF EARS. Really good paper that discusses how to statically detect access control vulnerabilities. Requires developers to specificy user roles and starting points. They then statically create a context-free grammer of each page. They use this CFG to extract links. In this way, they statically build up the set of pages that a user{\&}{\#}039;s role can explicitally access. Then they explicitly try to access higher roles pages from a lower role. If they can, then they detect a vulnerability.},
+  file            = {:Users/adamd/Dropbox/Documents/Mendeley Desktop/2011 -
+		  Sun, Xu, Su - Static Detection of Access Control
+		  Vulnerabilities in Web Applications.pdf:pdf},
+  mendeley-groups = {6 - Application/Logic and implementation flaws},
+}
+
+@Article{yee2009a,
+  author          = {Yee, Bennet and Sehr, David and Dardyk, Gregory and Chen, J. Bradley and Muth, Robert and Ormandy, Tavis and Okasaka, Shiki and Narula, Neha and Fullagar, Nicholas},
+  title           = {{Native client: A sandbox for portable, untrusted x86 native code}},
+  journal         = {Proceedings - IEEE Symposium on Security and Privacy},
+  year            = {2009},
+  pages           = {79--93},
+  abstract        = {This paper describes the design, implementation and
+		  evaluation of Native Client, a sandbox for untrusted x86
+		  native code. Native Client aims to give browser-based
+		  applications the computational performance of native
+		  applications without compromising safety. Native Client
+		  uses software fault isolation and a secure runtime to
+		  direct system interaction and side effects through
+		  interfaces managed by Native Client. Native Client provides
+		  operating system portability for binary code while
+		  supporting performance-oriented features generally absent
+		  from Web application programming environments, such as
+		  thread support, instruction set extensions such as SSE, and
+		  use of compiler intrinsics and hand-coded assembler. We
+		  combine these properties in an open architecture that
+		  encourages community review and 3rd-party tools.},
+  doi             = {10.1109/SP.2009.25},
+  file            = {:C$\backslash$:/Users/ysafaeis/Desktop/Sandboxing/05207638.pdf:pdf},
+  isbn            = {9780769536330},
+  issn            = {10816011},
+  mendeley-groups = {6 - Application/Attack surface reduction},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}
