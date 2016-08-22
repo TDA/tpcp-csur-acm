@@ -1164,7 +1164,7 @@ surface, the odds of an attack being able to exploit a
 vulnerability successfully is reduced as well.
 
 Attempts have been made to measure an application's attack
-surface~\cite{howard2003, manadhata2007, manadhata2008, ruprecht2014}.
+surface~\cite{howard2003,manadhata2007,manadhata2008,ruprecht2014}.
 This has the benefit of attempting to quantify the attack surface of
 an application, which in itself is a difficult problem.
 
@@ -1172,9 +1172,9 @@ Several research works attempt to reduce the attack surface. Some
 approaches try to statically analyze for deadcode, then restrict the
 execution of the deadcode during runtime~\cite{kurmus2011}. Other ways
 attempt to leverage compile-time configurability to reduce the attack
-surface~\cite{tartler2012, kurmus2013, ruprecht2014}. A different
+surface~\cite{tartler2012,kurmus2013,ruprecht2014}. A different
 approach is to reduce the attack surface by partitioning the
-application into different privilege levels~\cite{barth2010, xu2012}.
+application into different privilege levels~\cite{barth2010,xu2012}.
 Other approaches attempt to restrict the communication between
 applications, in order to reduce opportunities for the attacker to
 input data to the system~\cite{kantola2012}.
@@ -1199,32 +1199,28 @@ way, this line of research can be seen as a mitigation technique.
 Significant progress in this area started with the idea of
 control-flow integrity, essentially ensuring dynamically at runtime
 that the control-flow of the application does not
-deviate~\cite{abadi2005, abadi2009}. The first implementations were
+deviate~\cite{abadi2005,abadi2009}. The first implementations were
 deemed infeasible, so later research attempted to improve the
-efficiency of control-flow integrity~\cite{zhang2013, tice2014,
-	bletsch2011, zhang2013, zhang2013a}.
+efficiency of control-flow integrity~\cite{zhang2013,tice2014,bletsch2011,zhang2013,zhang2013a}.
 
 Researchers have advanced the state of attacks against control-flow
 hijacking. The most advanced of these is return-oriented programming
 (ROP), in which an attacker reuses bits of code from the original
 application, so that the attacker can hijack the control-flow of the
-application without introducing new code~\cite{roemer2012,
-	bletsch2010, tran2011}. Researchers have also improved these ROP
-techniques~\cite{checkoway2010, buchanan2008, kayaalp2012, chen2012,
-	goktas2014, schwartz2011} and applied them to a different
+application without introducing new code~\cite{roemer2012,bletsch2010,tran2011}. 
+Researchers have also improved these ROP
+techniques~\cite{checkoway2010,buchanan2008,kayaalp2012,chen2012,goktas2014,schwartz2011}
+ and applied them to a different
 architecture~\cite{davi2012}.
 
-Other research has looked at defending ROP attacks~\cite{pappas2012,
-	davi2009, davi2011, onarlioglu2010, gupta2013, pappas2012, lu2011,
-	lu2011a, homescu2012, gokta2014, cheng2014, pappas2013, snow2013,
-	hiser2012, wartell2012} or detecting ROP
+Other research has looked at defending ROP attacks~\cite{pappas2012,davi2009,davi2011,onarlioglu2010,gupta2013,pappas2012,lu2011,lu2011a,homescu2012,gokta2014,cheng2014,pappas2013,snow2013,hiser2012,wartell2012} or detecting ROP
 attacks\cite{polychronakis2011}. Metastudies have looked at the
-effectiveness of these defenses~\cite{skowyra2013, schuster2014}.
+effectiveness of these defenses~\cite{skowyra2013,schuster2014}.
 
 Finally, other research has shown that even with perfect control-flow
 integrity, due to the impreciseness of statically creating the
 control-flow graph, an attacker can still hijack the control
-flow~\cite{carlini2015, schuster2015, carlini2014, davi2014}.
+flow~\cite{carlini2015,schuster2015,carlini2014,davi2014}.
 
 \subsubsection{Logic and implementation flaws}
 
@@ -1256,19 +1252,19 @@ them~\cite{sun2011}.
 Some research has looked at other types of logic
 flaws, such as
 Privilege escalation vulnerabilities~\cite{monshizadeh2014}, data disclosure
-vulnerabilities~\cite{muthukumaran2015}, single sign-on vulnerabilities~\cite{zhou2014}, and parameter tampering vulnerabilities~\cite{bisht2010, bisht2011}.
+vulnerabilities~\cite{muthukumaran2015}, single sign-on vulnerabilities~\cite{zhou2014}, and parameter tampering vulnerabilities~\cite{bisht2010,bisht2011}.
 
 Execution After Redirect is another type of logic flaw
-vulnerability in web applications~\cite{doupe2011, payet2013}.
+vulnerability in web applications~\cite{doupe2011,payet2013}.
 
 Work on detecting logic vulnerabilities directly started with
 attempting to infer security specifications of an
-application~\cite{tan08:autoises, Livshits2009a}. Other approaches dynamically
+application~\cite{tan08:autoises,Livshits2009a}. Other approaches dynamically
 execute the application to infer likely invariants, then use static
 analysis to attempt to find paths that violate those
 invariants~\cite{felmetsger10:logic}. Further work tried to find missing
 security (authorization) checks automatically, without prior knowledge
-of the checks~\cite{son2011, son2013}.
+of the checks~\cite{son2011,son2013}.
 
 % citation needed here for black-box testing
 Recent work has looked at detecting logic flaw vulnerabilities in web
@@ -1295,21 +1291,21 @@ This subarea of application layer security concentrates on modeling, monitoring,
 
 There has been some research in finding new approaches of test generation for systems. One such approach is Concolic Testing~\cite{sen2007concolic}, which combines symbolic execution with concrete execution of the code being tested.
 
-Research has been made to automatically generate test inputs for Concolic testing (so that all execution paths can be tested) for major languages like C, C++, and Java~\cite{garg2013, jayaraman2009, sen2005}. Other research in this area includes an approach to combine Random testing~\cite{bird1983automatic} with Concolic execution~\cite{majumdar2007}, automated Concolic testing for smartphone applications~\cite{anand2012automated}, and using Concolic testing in a distributed, scalable way~\cite{kim2012scalable}. There has also been some work on discussing concolic testing tools and their limitations~\cite{qu2011}.
+Research has been made to automatically generate test inputs for Concolic testing (so that all execution paths can be tested) for major languages like C, C++, and Java~\cite{garg2013,jayaraman2009,sen2005}. Other research in this area includes an approach to combine Random testing~\cite{bird1983automatic} with Concolic execution~\cite{majumdar2007}, automated Concolic testing for smartphone applications~\cite{anand2012automated}, and using Concolic testing in a distributed, scalable way~\cite{kim2012scalable}. There has also been some work on discussing concolic testing tools and their limitations~\cite{qu2011}.
 
-There has been significant research in the area of analysis of an application. Dynamic analysis~\cite{ball1999concept} --- one such approach --- analyzes the code at run time, and much research in this area has been into Taint-based tracking~\cite{chang2008}, Anomaly Detection~\cite{cova2007, li11:block, li2012}, Context-sensitive sanitization for popular languages and templating languages~\cite{saxena2011, samuel2011}, Binary Analysis~\cite{song2008}, and Logic vulnerabilities~\cite{felmetsger2010}. Other work has looked at automated attack generation using model checking~\cite{martin08:goal_directed_mc}, and classifying the available countermeasures for the C and C++ languages~\cite{younan2012}.
+There has been significant research in the area of analysis of an application. Dynamic analysis~\cite{ball1999concept} --- one such approach --- analyzes the code at run time, and much research in this area has been into Taint-based tracking~\cite{chang2008}, Anomaly Detection~\cite{cova2007,li11:block,li2012}, Context-sensitive sanitization for popular languages and templating languages~\cite{saxena2011,samuel2011}, Binary Analysis~\cite{song2008}, and Logic vulnerabilities~\cite{felmetsger2010}. Other work has looked at automated attack generation using model checking~\cite{martin08:goal_directed_mc}, and classifying the available countermeasures for the C and C++ languages~\cite{younan2012}.
 
 The other approach to analyze applications is Static Analysis~\cite{cousot1977abstract}, where the code is analyzed at compile time. 
 There has been considerable research in this area, primarily focusing on analyzing input validation and sanitization~\cite{scholte2012,yu2011,bek,balzarotti2008,balzarotti07:multi_module_va}, access control~\cite{sun2011,naumovich2004}, automatically detecting and fixing vulnerabilities in major languages~\cite{xie2006,livshits:java_static_analysis,huang:webapp_stat_analysis}, and detecting XSS and SQL injection vulnerabilities~\cite{jovanovic2006a,jovanovic06:pixy-short,bisht2008,halfond:amnesia,wassermann2004}. 
 
-While a majority of research in this area is concentrated on popular attacks like XSS and SQL Injection, there is also some research on other topics like side-channel leaks~\cite{zhang2010} and information flow analysis~\cite{liu2010static,tripp2009,livshits2009a}.
+While a majority of research in this area is concentrated on popular attacks like XSS and SQL Injection, there is also some research on other topics like side-channel leaks~\cite{zhang2010} and information flow analysis~\cite{liu2010static,tripp2009,Livshits2009a}.
 
 \subsubsection{Protection against malicious code}
 One of the more challenging areas of application security is allowing arbitrary code execution without compromising security. There are situations in which applications need to run user provided code, reuse code that was written in a non-type-safe language, or host another program. For instance, browsers running web applications, or apps being uploaded to app stores. To run code safely and make sure that they are not executing malicious code, there are a number of protection mechanisms that can be used, one of which is Sandboxing, also known as Software Fault Isolation (SFI)~\cite{wahbe1993}. The idea is to run the code in an isolated environment within the application's address space (called fault domain) and then prevent the code from accessing addresses outside that fault domain.
 
-Early research was focused on rewriting unsafe instructions and providing interfaces for system calls to restrict program's access~\cite{wahbe1993, mccamant2006}. Native Client (NaCl)~\cite{yee2009} is a sandbox provided by Google that offers x86 untrusted Native code execution in Chrome browser using x86 memory segmentation. Therefore, web developers can leverage the performance of executing native code in a safe environment. Xax~\cite{douceur2008} is another similar technology that is in form of a browser plug-in that provides an abstraction layer for OS system calls. Other research extends this technology by covering ARM and x86-64~\cite{zhao2011, sehr2010, ansel}. Others attempt to reduce the overhead of performing binary rewriting and memory isolation~\cite{ford2008, jana2011}. Sandboxing is also used for executing untrusted native code in Android applications~\cite{sun2014, afonso2016}.
+Early research was focused on rewriting unsafe instructions and providing interfaces for system calls to restrict program's access~\cite{wahbe1993,mccamant2006}. Native Client (NaCl)~\cite{yee2009} is a sandbox provided by Google that offers x86 untrusted Native code execution in Chrome browser using x86 memory segmentation. Therefore, web developers can leverage the performance of executing native code in a safe environment. Xax~\cite{douceur2008} is another similar technology that is in form of a browser plug-in that provides an abstraction layer for OS system calls. Other research extends this technology by covering ARM and x86-64~\cite{zhao2011,sehr2010,ansel}. Others attempt to reduce the overhead of performing binary rewriting and memory isolation~\cite{ford2008,jana2011}. Sandboxing is also used for executing untrusted native code in Android applications~\cite{sun2014,afonso2016}.
 
-The other approach toward protecting against malicious code is to analyze the code and detect malicious behavior~\cite{zhou2012}. Despite all the efforts that have been made to keep malicious apps off the Android market, malicious apps can still find their way into the app store by bypassing the Google Bouncer~\cite{lockheimer:2012} using different techniques. Bouncer uses sandboxing techniques to run apps in a confined environment, but researchers~\cite{oberheide2012dissecting} have shown that apps can fingerprint Bouncer and the environment in which they are being analyzed, using evasion and obfuscating techniques to complicate the reverse engineering process. If apps could detect that they are being analyzed, they can hold off on running their malicious code while being analyzed. A lot of research has been done to fingerprint the Android analyzers to show that evading detection is possible~\cite{maier2014, jing2014, vidas2014}. Other approaches use analysis to detect logic bombs, i.e., when an application changes its behavior under certain conditions~\cite{fratantonio2016}.
+The other approach toward protecting against malicious code is to analyze the code and detect malicious behavior~\cite{zhou2012}. Despite all the efforts that have been made to keep malicious apps off the Android market, malicious apps can still find their way into the app store by bypassing the Google Bouncer~\cite{lockheimer:2012} using different techniques. Bouncer uses sandboxing techniques to run apps in a confined environment, but researchers~\cite{oberheide2012dissecting} have shown that apps can fingerprint Bouncer and the environment in which they are being analyzed, using evasion and obfuscating techniques to complicate the reverse engineering process. If apps could detect that they are being analyzed, they can hold off on running their malicious code while being analyzed. A lot of research has been done to fingerprint the Android analyzers to show that evading detection is possible~\cite{maier2014,jing2014,vidas2014}. Other approaches use analysis to detect logic bombs, i.e., when an application changes its behavior under certain conditions~\cite{fratantonio2016}.
 
 \subsection{Focus Areas}
 
