@@ -70,7 +70,7 @@
 \begin{document}
 
 % Page heads
-\markboth{G. Zhou et al.}{A Multifrequency MAC Specially Designed for WSN Applications}
+\markboth{ et al.}{Total Platform Cyber Protection}
 
 % Title portion
 \title{Total Platform Cyber Protection}
@@ -166,9 +166,7 @@ synchronization errors.
 %TODO Sai: Add keywords here
 \keywords{}
 
-\acmformat{Gang Zhou, Yafeng Wu, Ting Yan, Tian He, Chengdu Huang, John A. Stankovic,
-and Tarek F. Abdelzaher, 2010. A multifrequency MAC specially
-designed for  wireless sensor network applications.}
+\acmformat{, 2016. Total Platform Cyber Protection.}
 % At a minimum you need to supply the author names, year and a title.
 % IMPORTANT:
 % Full first names whenever they are known, surname last, followed by a period.
@@ -1055,6 +1053,295 @@ execution of concurrent applications. Therefore, attacks that take
 advantage of the concurrency in the Operating System are unexplored.
 Research must be done to create new models for these attacks. 
 
+\section{Application Layer}
+
+The application layer is the layer of the computing stack that
+performs that actual useful computation or offers the computing
+service. It is essentially at the top of the computing stack, as the
+lower layers of the computing stack provide abstractions so that
+applications are easier to write and the upper layer (networking) is
+used by the application layer to communicate to other applications.
+
+At the application layer, we consider all the following types of
+``applications'' under the application layer umbrella: GUI
+applications, command-line applications, server batch process
+applications, web applications, or mobile applications. Also, all
+programming languages used to develop the applications are also in
+scope, from compiled languages such as C or C++ to scripting languages
+such as Python and Ruby. In short, all types of computing applications
+are included in the application layer.
+
+Due to abstractions provided by the lower layers, applications
+typically have lesser privilege than the lower layers of the computing
+stack. This is due to the abstractions provided to the application
+layer, for instance an application cannot access the underlying hard
+drive directly, but must use the Operating System's provided
+interface.
+
+Applications developed are typically very complex to understand
+completely. This is due in part to the reliance on the abstractions
+provided by the lower computing layers (as these abstractions must be
+fully understood to understand how the application uses them). Another
+aspect is that applications frequently use shared libraries or other
+middleware, which are also considered to be part of the application
+layer. In this way, multiple different applications can all use the
+same underlying library. As the application's behavior depends on the
+behavior of \emph{all} used libraries and abstractions, this means
+that understanding even a simple application is dependent on the
+complexity of the used abstractions.
+
+\subsection{Threats}
+
+Applications, by definition, must be accessible by users in
+order to perform their useful computation. Due to this accessibility,
+the application layer, of all the other computing layers, is the entry
+point for attacks or exploits. 
+
+At a high level the threat to the application layer is attackers being
+able to influence the system to perform computation of their choosing.
+There are two main vectors for an attacker to influence the system:
+(1) software vulnerabilities in an application that can allow an
+attacker to exploit the vulnerability to either perform arbitrary
+computation or otherwise influence the application and (2) a malicious
+application (typically described as a Trojan application) that the
+attacker tricks the user into installing and running on the system,
+usually by using social engineering techniques. 
+
+Vulnerabilities are flaws or bugs in the application (or any software
+for that matter) that allows an attacker to compromise the security of
+the application. The key difference from normal flaws or bugs in
+software is that vulnerabilities allow the program to deviate from the expected behavior. These vulnerabilities range the gamut of possible causes
+such as programming errors or configuration mistakes. They can be in
+the actual, custom application software or in any of the libraries
+that the application uses. Some vulnerabilities are specific to a
+given programming language, while others are more broad and can any
+affect application. Examples of common vulnerabilities are: buffer
+overflow, heap overflow, format string, off-by-one, integer overflow,
+time-of-check-time-of-use, cross-site scripting, SQL injection, and
+logic flaws.
+
+Trojan applications attempt to control or manipulate the system by
+tricking a user into executing them. They frequently do this by using
+social engineering techniques to entice the user to execute them. The
+application may appear innocuous, such as a flashlight application on
+a mobile device, but may in fact include malicious functionality that
+the user does not want. 
+
+Using either of these two techniques, the attackers goal is to move
+from an external position to having influence on the executing system.
+The best scenario for the attacker is to completely control the
+execution of the application. From here, the attacker can now
+arbitrarily access any resource that the application can access. For
+instance, this could mean reading sensitive data, changing sensitive
+data, deleting sensitive data, or using the vantage point of the
+application to further the compromise to the lower levels of the
+computing platform or even to other applications on the network.
+
+Applications have a large and complex attack surface, which increases
+the chances of a developer accidentally introducing a vulnerability.
+The attack surface of the application is increased by the transitive
+closure of the libraries that the application uses (and that those
+libraries use). A vulnerability in a library is a vulnerability in the
+application that uses that library. Therefore, the complexity and
+increased attack surface of applications are a threat, as they allow
+increases in vulnerabilities. 
+
+\subsection{Research}
+
+Security of the application layer has received significant attention
+from the research community. Because of this, we have divided the
+research into the following categories: attack surface reduction, prevent control-flow
+hijacking, logic and implementation flaws, mitigation and recovery,
+modeling and monitoring execution, and protection against malicious
+code.
+
+\subsubsection{Attack surface reduction}
+
+The idea behind this subarea of application layer security research is
+to reduce the attack surface of the application. This line of research
+views vulnerabilities as a probability, and by reducing the attack
+surface, the odds of an attack being able to exploit a
+vulnerability successfully is reduced as well.
+
+Attempts have been made to measure an application's attack
+surface~\cite{howard2003, manadhata2007, manadhata2008, ruprecht2014}.
+This has the benefit of attempting to quantify the attack surface of
+an application, which in itself is a difficult problem.
+
+Several research works attempt to reduce the attack surface. Some
+approaches try to statically analyze for deadcode, then restrict the
+execution of the deadcode during runtime~\cite{kurmus2011}. Other ways
+attempt to leverage compile-time configurability to reduce the attack
+surface~\cite{tartler2012, kurmus2013, ruprecht2014}. A different
+approach is to reduce the attack surface by partitioning the
+application into different privilege levels~\cite{barth2010, xu2012}.
+Other approaches attempt to restrict the communication between
+applications, in order to reduce opportunities for the attacker to
+input data to the system~\cite{kantola2012}.
+
+Finally, other approaches attempt to quantify the attack surface and
+measure the actual reduction~\cite{kurmus2014}.
+
+\subsubsection{Prevent control-flow hijacking}
+
+Modern attackers, exploiting binary applications such as browsers,
+media players, or PDF readers, attempt to hijack the control-flow of
+the application. If an attacker successfully hijacks the control-flow
+of the application, then she has complete control over the execution
+of the application. Many vulnerability classes enable control-flow
+hijacking, specifically memory corruption vulnerabilities such as
+buffer overflows, heap overflows, and format strings~\cite{szekeres2013}.
+
+The goal of this line of research is to prevent the attacker from
+successfully hijacking the control-flow of the application. In this
+way, this line of research can be seen as a mitigation technique.
+
+Significant progress in this area started with the idea of
+control-flow integrity, essentially ensuring dynamically at runtime
+that the control-flow of the application does not
+deviate~\cite{abadi2005, abadi2009}. The first implementations were
+deemed infeasible, so later research attempted to improve the
+efficiency of control-flow integrity~\cite{zhang2013, tice2014,
+	bletsch2011, zhang2013, zhang2013a}.
+
+Researchers have advanced the state of attacks against control-flow
+hijacking. The most advanced of these is return-oriented programming
+(ROP), in which an attacker reuses bits of code from the original
+application, so that the attacker can hijack the control-flow of the
+application without introducing new code~\cite{roemer2012,
+	bletsch2010, tran2011}. Researchers have also improved these ROP
+techniques~\cite{checkoway2010, buchanan2008, kayaalp2012, chen2012,
+	goktas2014, schwartz2011} and applied them to a different
+architecture~\cite{davi2012}.
+
+Other research has looked at defending ROP attacks~\cite{pappas2012,
+	davi2009, davi2011, onarlioglu2010, gupta2013, pappas2012, lu2011,
+	lu2011a, homescu2012, gokta2014, cheng2014, pappas2013, snow2013,
+	hiser2012, wartell2012} or detecting ROP
+attacks\cite{polychronakis2011}. Metastudies have looked at the
+effectiveness of these defenses~\cite{skowyra2013, schuster2014}.
+
+Finally, other research has shown that even with perfect control-flow
+integrity, due to the impreciseness of statically creating the
+control-flow graph, an attacker can still hijack the control
+flow~\cite{carlini2015, schuster2015, carlini2014, davi2014}.
+
+\subsubsection{Logic and implementation flaws}
+
+Not all security vulnerabilities are the result of memory corruption
+or other programming language-based flaws. Another kind of
+vulnerability class is called logic (or implementation) flaws. These
+flaws occur when the logic of the application is faulty. Consider an
+e-commerce application that allows a coupon to be reapplied to an order
+multiple times, driving the price to zero. Or if a user is able to
+enter a negative quantity for the purchase of an item, and the
+application uses that negative quantity to refund the purchase price!
+
+Logic vulnerabilities are particularly difficult for automated
+vulnerability analysis because they are deviations from the
+system's specification and the system's implementation. Very often, a
+system's specification exists only in the minds of the developers.
+Therefore, logic flaws are specific to every application, and are not
+simply the result of faulty data flows as most other vulnerability
+classes are.
+
+Research in logic flaws has typically focused on detecting a certain
+type of logic flaw, rather than detecting logic flaws generally. Early
+work looked at detecting state violations in web
+applications~\cite{cova2007}.
+
+Other research has looked at preventing access control
+vulnerabilities~\cite{dalton09:nemesis}, or statically detecting
+them~\cite{sun2011}.
+Some research has looked at other types of logic
+flaws, such as
+Privilege escalation vulnerabilities~\cite{monshizadeh2014}, data disclosure
+vulnerabilities~\cite{muthukumaran2015}, single sign-on vulnerabilities~\cite{zhou2014}, and parameter tampering vulnerabilities~\cite{bisht2010, bisht2011}.
+
+Execution After Redirect is another type of logic flaw
+vulnerability in web applications~\cite{doupe2011, payet2013}.
+
+Work on detecting logic vulnerabilities directly started with
+attempting to infer security specifications of an
+application~\cite{tan08:autoises, Livshits2009a}. Other approaches dynamically
+execute the application to infer likely invariants, then use static
+analysis to attempt to find paths that violate those
+invariants~\cite{felmetsger10:logic}. Further work tried to find missing
+security (authorization) checks automatically, without prior knowledge
+of the checks~\cite{son2011, son2013}.
+
+% citation needed here for black-box testing
+Recent work has looked at detecting logic flaw vulnerabilities in web
+applications in a black-box manner---that is, with no knowledge of the
+application's source code~\cite{pellegrino2014}.
+
+
+\subsubsection{Mitigation and recovery}
+%% Additions and changes made.
+%%Changes made after grammerly -- thanks Sai..its superb tool
+Mitigation and recovery are of major concern when it comes to application and systems security. This area of research is important because recovery of a tainted system is the first concern post-attack or exploitation.
+
+Researchers have found some Virtual Machine based approaches in order to recover from intrusions.~\cite{zhang2009b} suggest one such approach. They try to achieve recovery in three phases, Routine execution phase, Damage assessment phase and Recovery phase. This framework tries to log pre-attack states and system calls and takes forward or reverse taint-tracking approach. Recovery phase tries to Quarantine the malicious files and objects identified during the Damage assessment.
+
+A similar VM-based approach is taken in~\cite{oliveria2008b}. The Bezoar framework proposed in this paper recovers a system based on monitoring of propagation bytes in the system after hijacking attack has been detected. The framework replays the checkpointed run while ignoring inputs from malicious sources. Checkpointing methodology is also used in ExecRecorder[cite], which works on the idea of log-based recovery. They propose a method to checkpoint system states and logging nondeterministic events. Recovery of the system is achieved by replaying the execution post attack and based on the log generated the system mitigates the attack execution during the reply.
+
+Recovering programs from software bugs is also a method proposed for mitigation of software failures. Rx~\cite{qin2007} thoroughly explains a method based on checkpointing to detect and recover from software bugs.  This framework detects software bugs in a program using sensors and once the bug is detected mitigation is done by changing the execution environment dynamically. They have tabulated results displaying the mitigation of software bugs such as buffer overflow and stack overflow.
+
+Automated intrusion recovery system is proposed in~\cite{goel2005b}. Researchers have designed automated resolution policies which determine set of tainted files. Taser recovery system~\cite{goel2005b} is designed based on following models. Recovery model, Auditor, Analyzer and Resolver. Techniques like naming conventions and file permissions, logging of all events, the dependency of files, process and sockets are used by Taser in order to analyze intrusion. Similar to Recovery phase approach taken in~\cite{zhang2009b}, Taser uses the Resolver model proposed to go back to the state of the operating system before the intrusion.
+
+
+\subsubsection{Modeling and monitoring execution}
+This subarea of application layer security concentrates on modeling, monitoring, and analyzing the execution of an application to verify that the system is executing as expected, and to detect any malicious behavior. This can be seen as a testing strategy toward application security.
+
+There has been some research in finding new approaches of test generation for systems. One such approach is Concolic Testing~\cite{sen2007concolic}, which combines symbolic execution with concrete execution of the code being tested.
+
+Research has been made to automatically generate test inputs for Concolic testing (so that all execution paths can be tested) for major languages like C, C++, and Java~\cite{garg2013, jayaraman2009, sen2005}. Other research in this area includes an approach to combine Random testing~\cite{bird1983automatic} with Concolic execution~\cite{majumdar2007}, automated Concolic testing for smartphone applications~\cite{anand2012automated}, and using Concolic testing in a distributed, scalable way~\cite{kim2012scalable}. There has also been some work on discussing concolic testing tools and their limitations~\cite{qu2011}.
+
+There has been significant research in the area of analysis of an application. Dynamic analysis~\cite{ball1999concept} --- one such approach --- analyzes the code at run time, and much research in this area has been into Taint-based tracking~\cite{chang2008}, Anomaly Detection~\cite{cova2007, li11:block, li2012}, Context-sensitive sanitization for popular languages and templating languages~\cite{saxena2011, samuel2011}, Binary Analysis~\cite{song2008}, and Logic vulnerabilities~\cite{felmetsger2010}. Other work has looked at automated attack generation using model checking~\cite{martin08:goal_directed_mc}, and classifying the available countermeasures for the C and C++ languages~\cite{younan2012}.
+
+The other approach to analyze applications is Static Analysis~\cite{cousot1977abstract}, where the code is analyzed at compile time. 
+There has been considerable research in this area, primarily focusing on analyzing input validation and sanitization~\cite{scholte2012,yu2011,bek,balzarotti2008,balzarotti07:multi_module_va}, access control~\cite{sun2011,naumovich2004}, automatically detecting and fixing vulnerabilities in major languages~\cite{xie2006,livshits:java_static_analysis,huang:webapp_stat_analysis}, and detecting XSS and SQL injection vulnerabilities~\cite{jovanovic2006a,jovanovic06:pixy-short,bisht2008,halfond:amnesia,wassermann2004}. 
+
+While a majority of research in this area is concentrated on popular attacks like XSS and SQL Injection, there is also some research on other topics like side-channel leaks~\cite{zhang2010} and information flow analysis~\cite{liu2010static,tripp2009,livshits2009a}.
+
+\subsubsection{Protection against malicious code}
+One of the more challenging areas of application security is allowing arbitrary code execution without compromising security. There are situations in which applications need to run user provided code, reuse code that was written in a non-type-safe language, or host another program. For instance, browsers running web applications, or apps being uploaded to app stores. To run code safely and make sure that they are not executing malicious code, there are a number of protection mechanisms that can be used, one of which is Sandboxing, also known as Software Fault Isolation (SFI)~\cite{wahbe1993}. The idea is to run the code in an isolated environment within the application's address space (called fault domain) and then prevent the code from accessing addresses outside that fault domain.
+
+Early research was focused on rewriting unsafe instructions and providing interfaces for system calls to restrict program's access~\cite{wahbe1993, mccamant2006}. Native Client (NaCl)~\cite{yee2009} is a sandbox provided by Google that offers x86 untrusted Native code execution in Chrome browser using x86 memory segmentation. Therefore, web developers can leverage the performance of executing native code in a safe environment. Xax~\cite{douceur2008} is another similar technology that is in form of a browser plug-in that provides an abstraction layer for OS system calls. Other research extends this technology by covering ARM and x86-64~\cite{zhao2011, sehr2010, ansel}. Others attempt to reduce the overhead of performing binary rewriting and memory isolation~\cite{ford2008, jana2011}. Sandboxing is also used for executing untrusted native code in Android applications~\cite{sun2014, afonso2016}.
+
+The other approach toward protecting against malicious code is to analyze the code and detect malicious behavior~\cite{zhou2012}. Despite all the efforts that have been made to keep malicious apps off the Android market, malicious apps can still find their way into the app store by bypassing the Google Bouncer~\cite{lockheimer:2012} using different techniques. Bouncer uses sandboxing techniques to run apps in a confined environment, but researchers~\cite{oberheide2012dissecting} have shown that apps can fingerprint Bouncer and the environment in which they are being analyzed, using evasion and obfuscating techniques to complicate the reverse engineering process. If apps could detect that they are being analyzed, they can hold off on running their malicious code while being analyzed. A lot of research has been done to fingerprint the Android analyzers to show that evading detection is possible~\cite{maier2014, jing2014, vidas2014}. Other approaches use analysis to detect logic bombs, i.e., when an application changes its behavior under certain conditions~\cite{fratantonio2016}.
+
+\subsection{Focus Areas}
+
+Much of the prior research focuses on just looking at memory
+corruption bugs, but we need to look at how the same sort of advanced
+protections can be applied to other classes of bugs, i.e., what is
+next? This includes: input validation, logic problems, leaking
+secrets, performance degradation, denial-of-service, command (e.g.,
+SQL) injection, and concurrency attacks.
+
+
+It is clear that an large amount of research effort has looked at
+securing the application layer. However, even so, there are areas that
+we believe are underserved by the research community and provide a
+significant opportunity to solve.
+
+\begin{enumerate}
+	\item The next generation of vulnerabilities (e.g., logic flaws)
+	\item Need good tools for analysis of race conditions / concurrency attacks
+\end{enumerate}
+
+This focus of this layer includes the runtime environments and abstractions
+below a high-level programming language that convert it into bytecode.
+
+\subsection{Focus Areas}
+
+\begin{enumerate}
+	\item Dealing with bloat and reducing the attack surface
+	\item Instrumentation is easier at this layer, but faster ways to observe execution are needed
+	\item Controlling easily misued middleware APIs (confused deputy)
+\end{enumerate}
+
 
 \section{Conclusions}
 
@@ -1092,8 +1379,7 @@ channel-switching time of Micaz motes: 24.3$\mu$s.
 
 % Acknowledgments
 \begin{acks}
-The authors would like to thank Dr. Maura Turolla of Telecom
-Italia for providing specifications about the application scenario.
+
 \end{acks}
 
 % Bibliography
