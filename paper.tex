@@ -75,7 +75,7 @@
 % Title portion
 \title{Total Platform Cyber Protection}
 
-%TODO Adam: Not sure if anon submission so just leaving like this for now
+% TODO Adam: Not sure if anon submission so just leaving like this for now
 \author{
 %First Author
 %\affil{Arizona State University}
@@ -101,24 +101,7 @@
 
 % TODO Sai: Discuss story with yeganeh and get a nice little abstract here
 \begin{abstract}
-Multifrequency media access control has been well understood in
-general wireless ad hoc networks, while in wireless sensor networks,
-researchers still focus on single frequency solutions. In wireless
-sensor networks, each device is typically equipped with a single
-radio transceiver and applications adopt much smaller packet sizes
-compared to those in general wireless ad hoc networks. Hence, the
-multifrequency MAC protocols proposed for general wireless ad hoc
-networks are not suitable for wireless sensor network applications,
-which we further demonstrate through our simulation experiments. In
-this article, we propose MMSN, which takes advantage of
-multifrequency availability while, at the same time, takes into
-consideration the restrictions of wireless sensor networks. Through
-extensive experiments, MMSN exhibits the prominent ability to utilize
-parallel transmissions among neighboring nodes. When multiple physical
-frequencies are available, it also achieves increased energy
-efficiency, demonstrating the ability to work against radio
-interference and the tolerance to a wide range of measured time
-synchronization errors.
+Abstract goes here
 \end{abstract}
 
 
@@ -163,10 +146,10 @@ synchronization errors.
 % We no longer use \terms command
 %\terms{Design, Algorithms, Performance}
 
-%TODO Sai: Add keywords here
+% TODO Sai: Add keywords here
 \keywords{}
 
-\acmformat{, 2016. Total Platform Cyber Protection.}
+\acmformat{\emph{Data needed here}, 2016. Total Platform Cyber Protection.}
 % At a minimum you need to supply the author names, year and a title.
 % IMPORTANT:
 % Full first names whenever they are known, surname last, followed by a period.
@@ -425,6 +408,7 @@ possibilities include running multiple chips with different
 implementations side-by-side and comparing results to detect unexpected
 behavior.
 
+% TODO Sai: make `Suggested Focus Areas` and `Focus Areas` consistent 
 \subsection{Suggested Focus Areas}
 
 A key problem with hardware security is non-destructive IC
@@ -1308,7 +1292,8 @@ Early research was focused on rewriting unsafe instructions and providing interf
 The other approach toward protecting against malicious code is to analyze the code and detect malicious behavior~\cite{zhou2012}. Despite all the efforts that have been made to keep malicious apps off the Android market, malicious apps can still find their way into the app store by bypassing the Google Bouncer~\cite{lockheimer:2012} using different techniques. Bouncer uses sandboxing techniques to run apps in a confined environment, but researchers~\cite{oberheide2012dissecting} have shown that apps can fingerprint Bouncer and the environment in which they are being analyzed, using evasion and obfuscating techniques to complicate the reverse engineering process. If apps could detect that they are being analyzed, they can hold off on running their malicious code while being analyzed. A lot of research has been done to fingerprint the Android analyzers to show that evading detection is possible~\cite{maier2014,jing2014,vidas2014}. Other approaches use analysis to detect logic bombs, i.e., when an application changes its behavior under certain conditions~\cite{fratantonio2016}.
 
 \subsection{Focus Areas}
-
+% TODO Sai: Definitely needs a smoother transition from above, why are we saying research here 
+%%is inadequate and looks at only mem-corruption bugs? what is the basis?
 Much of the prior research focuses on just looking at memory
 corruption bugs, but we need to look at how the same sort of advanced
 protections can be applied to other classes of bugs, i.e., what is
@@ -1330,53 +1315,29 @@ significant opportunity to solve.
 This focus of this layer includes the runtime environments and abstractions
 below a high-level programming language that convert it into bytecode.
 
-\subsection{Focus Areas}
-
-\begin{enumerate}
-	\item Dealing with bloat and reducing the attack surface
-	\item Instrumentation is easier at this layer, but faster ways to observe execution are needed
-	\item Controlling easily misued middleware APIs (confused deputy)
-\end{enumerate}
+% TODO Sai: WHAT is this?
+%\subsection{Focus Areas}
+%
+%\begin{enumerate}
+%	\item Dealing with bloat and reducing the attack surface
+%	\item Instrumentation is easier at this layer, but faster ways to observe execution are needed
+%	\item Controlling easily misused middleware APIs (confused deputy)
+%\end{enumerate}
 
 
 \section{Conclusions}
 
-In this article, we develop the first multifrequency MAC protocol for
-WSN applications in which each device adopts a
-single radio transceiver. The different MAC design requirements for
-WSNs and general wireless ad-hoc networks are
-compared, and a complete WSN multifrequency MAC design (MMSN) is
-put forth. During the MMSN design, we analyze and evaluate different
-choices for frequency assignments and also discuss the nonuniform
-back-off algorithms for the slotted media access design.
 
-
-% Appendix
-\appendix
-\section*{APPENDIX}
-\setcounter{section}{1}
-In this appendix, we measure
-the channel switching time of Micaz [CROSSBOW] sensor devices.
-In our experiments, one mote alternatingly switches between Channels
-11 and 12. Every time after the node switches to a channel, it sends
-out a packet immediately and then changes to a new channel as soon
-as the transmission is finished. We measure the
-number of packets the test mote can send in 10 seconds, denoted as
-$N_{1}$. In contrast, we also measure the same value of the test
-mote without switching channels, denoted as $N_{2}$. We calculate
-the channel-switching time $s$ as
-\begin{eqnarray}%
-s=\frac{10}{N_{1}}-\frac{10}{N_{2}}. \nonumber
-\end{eqnarray}%
-By repeating the experiments 100 times, we get the average
-channel-switching time of Micaz motes: 24.3$\mu$s.
-
-\appendixhead{ZHOU}
-
-% Acknowledgments
-\begin{acks}
-
-\end{acks}
+%% Appendix
+%\appendix
+%\section*{APPENDIX}
+%\setcounter{section}{1}
+%\appendixhead{}
+%
+%% Acknowledgments
+%\begin{acks}
+%
+%\end{acks}
 
 % Bibliography
 \bibliographystyle{ACM-Reference-Format-Journals}
